@@ -17,9 +17,11 @@
   - MySQL Workbench
   - AWS RDS + EC2 server
   - Redis server
+  - IntelliJ
   ```
  ### 2.2 FRONT-END
   ```
   - HTML / CSS
   - JavaScript
+  - VSC
   ```
