@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "postings_tb")
 public class Posting {
     @Id
