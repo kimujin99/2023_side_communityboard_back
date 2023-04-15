@@ -22,6 +22,5 @@
  ### 2.2 FRONT-END
   ```
   - HTML / CSS
-  - JavaScript
-  - VSC
+  - Thymeleaf
   ```
