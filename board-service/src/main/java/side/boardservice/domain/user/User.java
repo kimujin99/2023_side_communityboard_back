@@ -32,7 +32,7 @@ public class User {
     @Column(name = "user_role", length = 10, nullable = false)
     private String userRole;
 
-    @Column(name = "user_role", nullable = false)
+    @Column(name = "ins_time", nullable = false)
     @CreationTimestamp
     private Timestamp insTime;
 
