@@ -1,0 +1,7 @@
+@font-face{
+    src: url("../font/DungGeunMo.ttf");
+    font-family:"DungGeunMo";
+}
+html, body, pre, code, kbd, samp {
+    font-family: "DungGeunMo";
+}
