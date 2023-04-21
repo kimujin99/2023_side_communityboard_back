@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/postings")
+@RequestMapping("/boards")
 @RequiredArgsConstructor
-public class PostingController {
+public class BoardsController {
 
     @GetMapping
     public String postings(){

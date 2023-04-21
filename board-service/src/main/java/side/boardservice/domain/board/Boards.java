@@ -10,13 +10,13 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "postings_tb")
-public class Posting {
+public class Boards {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "posting_code", nullable = false)
     private Long postingCode;
 
-    @Column(name = "category_name", nullable = false)
+    @Column(name = "category_code", nullable = false)
     private Long categoryCode;
 
     @Column(name = "user_code", nullable = false)
@@ -37,10 +37,10 @@ public class Posting {
     @Column(name = "upd_time", nullable = false)
     private Timestamp updTime;
 
-    public Posting() {
+    public Boards() {
     }
 
-    public Posting(Long categoryCode, Long userCode, String postingTitle, String postingContent) {
+    public Boards(Long categoryCode, Long userCode, String postingTitle, String postingContent) {
         this.categoryCode = categoryCode;
         this.userCode = userCode;
         this.postingTitle = postingTitle;
