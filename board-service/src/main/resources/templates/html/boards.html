@@ -19,25 +19,22 @@
 <body>
 <!--  main  -->
 <div class="flex flex-col items-center h-screen m-0">
-    <div class="nes-container with-title is-centered w-11/12 h-full m-4">
+    <div class="nes-container with-title is-centered w-3/4 h-full m-6" style="margin-top:120px">
         <p class="title">게시판</p>
         <!--    header    -->
         <div class="flex justify-end">
             <div class="flex flex-row justify-center items-center m-2">
                 <label for="default_select" class="w-24">카테고리</label>
                 <div class="nes-select">
-                    <select required id="default_select">
-                        <option value="" disabled selected hidden>전체</option>
-                        <option value="1">K-POP</option>
-                        <option value="2">영화</option>
-                        <option value="3">연극/뮤지컬</option>
-                        <option value="4">일상</option>
+                    <select id="default_select" >
+                        <option value="" disabled selected hidden>선택</option>
+                        <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}"></option>
                     </select>
                 </div>
             </div>
             <div class="m-2">
                 <button class="nes-btn is-primary"
-                        th:onclick="|location.href='@{/basic/items/add}'|"
+                        th:onclick="|location.href='@{/boards/write}'|"
                         type="button">글쓰기</button>
             </div>
         </div>
@@ -50,19 +47,22 @@
                 <thead>
                 <tr>
                     <th class="w-1/12">ID</th>
-                    <th class="w-6/12">제목</th>
+                    <th class="w-2/12">카테고리</th>
+                    <th class="w-4/12">제목</th>
                     <th class="w-2/12">작성자</th>
                     <th class="w-1/12">조회수</th>
                     <th class="w-2/12">작성일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:onclick="|location.href='@{/postings/1}'|" class="nes-pointer">
-                    <td>1</td>
-                    <td>테스트용 제목입니다 !!!</td>
-                    <td>admin0</td>
-                    <td>10</td>
-                    <td>2023.04.20</td>
+                <tr th:each="val : ${boardList}"
+                        th:onclick="|location.href='@{/boards/{postingCode}(postingCode=${val.postingCode})}'|" class="nes-pointer">
+                    <td th:text="${val.postingCode}">ID</td>
+                    <td th:text="${val.categoryName}" class="text-slate-400">카테고리</td>
+                    <td th:text="${val.postingTitle}">제목</td>
+                    <td th:text="${val.userNickname}">작성자</td>
+                    <td th:text="${val.viewCount}">조회수</td>
+                    <td th:text="${val.insTime}">작성일</td>
                 </tr>
                 </tbody>
             </table>
