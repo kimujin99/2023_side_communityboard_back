@@ -30,4 +30,10 @@ public class BoardsController {
         return "html/boards.html";
     }
 
+    @GetMapping("/write")
+    public String writePost(Model model){
+        List<Category> categoryList = boardsService.categoryList();
+        model.addAttribute("categoryList", categoryList);
+        return "html/postingForm.html";
+    }
 }
