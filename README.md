@@ -23,4 +23,7 @@
   ```
   - HTML / CSS
   - Thymeleaf
+  - NES.CSS
+  - TailWind.CSS
+  - CKEditor
   ```
