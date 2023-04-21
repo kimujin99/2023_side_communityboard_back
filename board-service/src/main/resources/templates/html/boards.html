@@ -17,6 +17,25 @@
     <title>게시판</title>
 </head>
 <body>
+<!--  navi-bar  -->
+<nav class="w-full h-24 bg-black fixed z-50 flex">
+    <div class="w-1/2 flex items-center m-6">
+        <i class="snes-jp-logo is-large"></i>
+        <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
+    </div>
+    <div class="w-1/2 flex items-center justify-end m-6">
+        <a class="nes-btn" th:href="@{/boards}">BOARDS</a>
+        <a class="nes-btn" th:href="@{/boards/emoji}">EMOJI</a>
+        <a class="nes-btn" th:href="@{/boards/my}">MY PAGE</a>
+        <button type="button" class="nes-btn is-error"
+                th:onclick="|location.href='@{/logout}'|"
+        >LOGOUT</button>
+        <a class="m-3" th:href="@{/boards/my}">
+            <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+        </a>
+    </div>
+</nav>
+
 <!--  main  -->
 <div class="flex flex-col items-center h-screen m-0">
     <div class="nes-container with-title is-centered w-3/4 h-full m-6" style="margin-top:120px">
