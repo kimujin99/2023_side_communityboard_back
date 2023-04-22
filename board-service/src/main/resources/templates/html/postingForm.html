@@ -17,9 +17,9 @@
   <!--  title  -->
   <title>게시판</title>
 </head>
-<body>
+<body class="h-full w-full">
 <!--  navi-bar  -->
-<nav class="w-full h-24 bg-black fixed z-50 flex">
+<nav class="w-full h-24 bg-black fixed z-50 flex" style="min-width:1200px;">
   <div class="w-1/2 flex items-center m-6">
     <i class="snes-jp-logo is-large"></i>
     <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
@@ -38,13 +38,12 @@
 </nav>
 
 <!--  main  -->
-<div class="flex flex-col items-center h-screen m-0">
-  <div class="nes-container with-title is-centered w-3/4 h-min m-6" style="margin-top:120px; max-width: 1030px;">
+<div class="flex flex-col items-center w-full h-full m-0">
+  <div class="nes-container with-title is-centered m-8" style="margin-top:126px; height: 1100px; width: 1030px;">
     <p class="title">글쓰기</p>
 
     <form class="flex flex-col items-center h-full"
-          th:action method="post"
-    >
+          th:action method="post">
       <!--  Info  -->
       <div class="nes-table-responsive m-2">
         <table class="nes-table is-bordered is-centered" style="width:99%">
@@ -85,7 +84,7 @@
   </div>
 
   <!--  footer  -->
-  <footer class="w-full h-80 bg-black flex justify-center items-center text-xl py-14 bottom-0">
+  <footer class="w-full h-80 bg-black flex justify-center items-center text-xl py-14 bottom-0" style="min-width:1200px;">
     <div class="flex justify-center w-2/6">
       <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
       <div class="flex flex-col m-2">

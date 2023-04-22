@@ -11,12 +11,21 @@
 
     <!--  script  -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <style></style>
+    <style>
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        nav, footer {
+            min-width:1200px;
+        }
+    </style>
 
     <!--  title  -->
     <title>게시판</title>
 </head>
-<body>
+<body class="h-full w-full">
 
 <!--  navi-bar  -->
 <nav class="w-full h-24 bg-black fixed z-50 flex">
@@ -38,8 +47,8 @@
 </nav>
 
 <!--  main  -->
-<div class="flex flex-col items-center h-screen m-0">
-    <div class="nes-container with-title is-centered w-3/4 h-full m-6" style="margin-top:120px; max-width: 1030px; min-height:580px;">
+<div class="flex flex-col items-center w-screen h-screen m-0 relative">
+    <div class="nes-container with-title is-centered m-8 h-full" style="margin-top:126px; height: 1100px; width: 1030px;">
         <p class="title">게시판</p>
         <!--    header    -->
         <div class="flex justify-end">
@@ -64,7 +73,7 @@
 
         <!--    postings    -->
         <div class="nes-table-responsive m-2">
-            <table class="nes-table is-bordered is-centered" style="width:99%">
+            <table class="nes-table is-bordered is-centered table-fixed" style="width:99%">
                 <thead>
                 <tr>
                     <th class="w-1/12">ID</th>
@@ -87,6 +96,12 @@
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div>
+            <button class="nes-btn is-primary"
+                    th:onclick=""
+                    type="button">페이징</button>
         </div>
     </div>
 
