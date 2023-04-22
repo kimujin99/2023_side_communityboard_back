@@ -22,5 +22,4 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.removeButtons = 'Save,NewPage,Print,Scayt,SelectAll,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CreateDiv,Language,Flash,PageBreak,Iframe,Templates,Anchor,Unlink,Preview,Source,About,Styles,Subscript,Superscript,CopyFormatting,RemoveFormat,BidiLtr,BidiRtl,HorizontalRule,Maximize,ShowBlocks,Find,Replace,Outdent,Indent,Cut,Copy,Paste,PasteText,PasteFromWord';
     config.resize_enabled = false;
-    config.height = 800;
 };

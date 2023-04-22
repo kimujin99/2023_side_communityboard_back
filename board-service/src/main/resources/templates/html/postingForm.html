@@ -39,7 +39,7 @@
 
 <!--  main  -->
 <div class="flex flex-col items-center h-screen m-0">
-  <div class="nes-container with-title is-centered w-3/4 h-full m-6" style="margin-top:120px; max-width: 1030px;">
+  <div class="nes-container with-title is-centered w-3/4 h-min m-6" style="margin-top:120px; max-width: 1030px;">
     <p class="title">글쓰기</p>
 
     <form class="flex flex-col items-center h-full"
@@ -76,54 +76,55 @@
       </div>
 
       <!--  CKEditor  -->
-      <textarea class="h-full" id="editor4" name="editor4"></textarea>
+      <textarea id="editor4" name="editor4"></textarea>
 
       <!--  submit button  -->
       <button type="submit" class="nes-btn is-primary w-24 m-3">저장</button>
     </form>
 
   </div>
-</div>
 
-<!--  footer  -->
-<footer class="w-full h-80 bg-black flex justify-center items-center text-xl">
-  <div class="flex justify-center w-2/6">
-    <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
-    <div class="flex flex-col m-2">
-      <span class="text-white">| kimujin99</span>
-      <span class="text-white">| Back-End Engineer</span>
+  <!--  footer  -->
+  <footer class="w-full h-80 bg-black flex justify-center items-center text-xl py-14 bottom-0">
+    <div class="flex justify-center w-2/6">
+      <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+      <div class="flex flex-col m-2">
+        <span class="text-white">| kimujin99</span>
+        <span class="text-white">| Back-End Engineer</span>
+      </div>
     </div>
-  </div>
-  <div class="flex flex-col justify-center px-14 w-2/6 text-base">
-    <span class="text-white">I entered the world of Java programming through a government-funded education program and am now striving to become a skilled developer.</span>
-    <span class="text-white">Java is my primary programming language, and I am using Notion and Velog to post about my development experiences.</span>
-  </div>
-  <div class="flex flex-col w-2/6">
-    <div class="flex justify-center items-center my-4">
-      <i class="nes-icon is-small heart"></i>
-      <span class="text-white text-center mx-1">< Contact Me ></span>
-      <i class="nes-icon is-small heart"></i>
+    <div class="flex flex-col justify-center px-14 w-2/6 text-base">
+      <span class="text-white">I entered the world of Java programming through a government-funded education program and am now striving to become a skilled developer.</span>
+      <span class="text-white">Java is my primary programming language, and I am using Notion and Velog to post about my development experiences.</span>
     </div>
-    <div class="flex justify-center">
-      <a class="mx-5" th:href="@{https://github.com/kimujin99}">
-        <i class="nes-icon github"></i>
-      </a>
-      <a class="mx-5" th:href="@{https://velog.io/@kimujin99}">
-        <img th:src="@{/img/logo/velog_logo.png}" class="w-8 h-8">
-      </a>
-      <a class="mx-5" th:href="@{https://florentine-aries-53f.notion.site/JAVA-b886e6740f5e4347b50ce4841f4aa7fc}">
-        <img th:src="@{/img/logo/notion_logo.png}" class="w-8 h-8">
-      </a>
+    <div class="flex flex-col w-2/6">
+      <div class="flex justify-center items-center my-4">
+        <i class="nes-icon is-small heart"></i>
+        <span class="text-white text-center mx-1">< Contact Me ></span>
+        <i class="nes-icon is-small heart"></i>
+      </div>
+      <div class="flex justify-center">
+        <a class="mx-5" th:href="@{https://github.com/kimujin99}">
+          <i class="nes-icon github"></i>
+        </a>
+        <a class="mx-5" th:href="@{https://velog.io/@kimujin99}">
+          <img th:src="@{/img/logo/velog_logo.png}" class="w-8 h-8">
+        </a>
+        <a class="mx-5" th:href="@{https://florentine-aries-53f.notion.site/JAVA-b886e6740f5e4347b50ce4841f4aa7fc}">
+          <img th:src="@{/img/logo/notion_logo.png}" class="w-8 h-8">
+        </a>
+      </div>
+      <div class="flex justify-center items-center my-3">
+        <i class="nes-icon google"></i>
+        <span class="text-white mx-2">tomatoo3o97@gmail.com</span>
+      </div>
     </div>
-    <div class="flex justify-center items-center my-3">
-      <i class="nes-icon google"></i>
-      <span class="text-white mx-2">tomatoo3o97@gmail.com</span>
-    </div>
-  </div>
-</footer>
+  </footer>
+</div>
 
 <script>
     CKEDITOR.replace( 'editor4', {filebrowserUploadUrl:'/boards/write/imageUpload.do'} );
 </script>
+
 </body>
 </html>
