@@ -1,14 +1,20 @@
 package side.boardservice.domain.board;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
+@DynamicInsert
 @Table(name = "postings_tb")
 public class Boards {
     @Id
@@ -28,17 +34,16 @@ public class Boards {
     @Column(name = "posting_content", columnDefinition = "TEXT", nullable = false)
     private String postingContent;
 
-    @Column(name = "view_count", nullable = false)
+    @Column(name = "view_count")
     private Integer viewCount;
 
+    @CreationTimestamp
     @Column(name = "ins_time", nullable = false)
     private Timestamp insTime;
 
+    @CreationTimestamp
     @Column(name = "upd_time", nullable = false)
     private Timestamp updTime;
-
-    public Boards() {
-    }
 
     public Boards(Long categoryCode, Long userCode, String postingTitle, String postingContent) {
         this.categoryCode = categoryCode;
@@ -46,5 +51,4 @@ public class Boards {
         this.postingTitle = postingTitle;
         this.postingContent = postingContent;
     }
-
 }

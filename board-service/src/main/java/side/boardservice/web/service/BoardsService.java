@@ -22,6 +22,7 @@ public class BoardsService {
     @Autowired
     BoardsRepository boardsRepository;
 
+    //board 리스트 가져오기
     public List<BoardListDTO> getboardList() {
         List<Boards> boardsList = boardsRepository.findAll(Sort.by(Sort.Direction.ASC, "postingCode"));
         List<BoardListDTO> boardListDTOS = new ArrayList<>();
@@ -51,6 +52,16 @@ public class BoardsService {
         return boardListDTOS;
     }
 
+    //카테고리 리스트 가져오기
+    public Integer savePosting(Long categoryCode, String postingTitle, String postingContent) {
+        Boards boards = new Boards(categoryCode, 1L, postingTitle, postingContent);
+
+        boardsRepository.save(boards);
+
+        return 1;
+    }
+
+    //카테고리 리스트 가져오기
     public List<Category> categoryList() {
         return categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "categoryCode"));
     }
