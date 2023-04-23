@@ -13,6 +13,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:src = "@{/js/ckeditor/ckeditor.js}"></script>
   <style>
+      html, body {
+        height:100%;
+        width:100%;
+      }
       nav, footer {
         min-width:1200px;
       }
@@ -21,7 +25,7 @@
   <!--  title  -->
   <title>게시판</title>
 </head>
-<body class="h-full w-full">
+<body>
 <!--  navi-bar  -->
 <nav class="w-full h-24 bg-black fixed z-50 flex">
   <div class="w-1/2 flex items-center m-6">
@@ -42,7 +46,7 @@
 </nav>
 
 <!--  main  -->
-<div class="flex flex-col items-center w-full h-full m-0">
+<div class="flex flex-col items-center w-screen h-screen m-0">
   <div class="nes-container with-title is-centered m-8" style="margin-top:126px; height: 1100px; width: 1030px;">
     <p class="title">글쓰기</p>
 
