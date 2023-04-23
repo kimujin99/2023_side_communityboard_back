@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!--  meta  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--  link  -->
+  <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+  <!--  script  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      html, body {
+        height:100%;
+        width:100%;
+      }
+      nav, footer {
+        min-width:1200px;
+      }
+  </style>
+
+  <!--  title  -->
+  <title>게시판</title>
+</head>
+<body>
+<!--  navi-bar  -->
+<nav class="w-full h-24 bg-black fixed z-50 flex">
+  <div class="w-1/2 flex items-center m-6">
+    <i class="snes-jp-logo is-large"></i>
+    <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
+  </div>
+  <div class="w-1/2 flex items-center justify-end m-6">
+    <a class="nes-btn" th:href="@{/boards}">BOARDS</a>
+    <a class="nes-btn" th:href="@{/boards/emoji}">EMOJI</a>
+    <a class="nes-btn" th:href="@{/boards/my}">MY PAGE</a>
+    <button type="button" class="nes-btn is-error"
+            th:onclick="|location.href='@{/logout}'|"
+    >LOGOUT</button>
+    <a class="m-3" th:href="@{/boards/my}">
+      <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+    </a>
+  </div>
+</nav>
+
+<!--  main  -->
+<div class="flex flex-col items-center w-full h-full m-0">
+  <div class="nes-container with-title is-centered m-8 table" style="margin-top:126px; height: 1100px; width: 1030px;">
+    <p class="title">글 상세</p>
+
+    <div class="flex flex-col items-center h-full">
+      <!--  Info  -->
+      <div class="nes-table-responsive m-2 h-full">
+        <table class="nes-table is-bordered is-centered" style="width:99%; height:99%">
+          <tbody>
+
+          <tr>
+            <td>카테고리</td>
+            <td colspan="3">
+              <p th:text="${details.categoryName}" class="text-slate-400">카테고리</p>
+            </td>
+
+            <td>작성자</td>
+            <td>
+              <p th:text="${details.userNickname}">작성자</p>
+            </td>
+          </tr>
+
+          <tr>
+            <td>제목</td>
+            <td colspan="5" style="text-align:left;">
+              <p th:text="${details.postingTitle}">제목</p>
+            </td>
+          </tr>
+
+          <!--  CKEditor  -->
+          <tr class="h-full" style="text-align:left;">
+            <td colspan="6">
+              <div th:utext="${details.postingContent}" class="h-full">
+                내용
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>작성일</td>
+            <td th:text="${details.insTime}">
+            </td>
+
+            <td>수정일</td>
+            <td>
+              <p th:text="${details.updTime}"></p>
+            </td>
+
+            <td>조회수</td>
+            <td>
+              <p th:text="${details.viewCount}"></p>
+            </td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+      <!--  button  -->
+      <div class="flex justify-center">
+        <button type="button" class="nes-btn is-primary w-24 m-3">수정</button>
+        <button type="button" class="nes-btn is-error w-24 m-3">삭제</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!--  footer  -->
+  <footer class="w-full h-80 bg-black flex justify-center items-center text-xl py-14 bottom-0">
+    <div class="flex justify-center w-2/6">
+      <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+      <div class="flex flex-col m-2">
+        <span class="text-white">| kimujin99</span>
+        <span class="text-white">| Back-End Engineer</span>
+      </div>
+    </div>
+    <div class="flex flex-col justify-center px-14 w-2/6 text-base">
+      <span class="text-white">I entered the world of Java programming through a government-funded education program and am now striving to become a skilled developer.</span>
+      <span class="text-white">Java is my primary programming language, and I am using Notion and Velog to post about my development experiences.</span>
+    </div>
+    <div class="flex flex-col w-2/6">
+      <div class="flex justify-center items-center my-4">
+        <i class="nes-icon is-small heart"></i>
+        <span class="text-white text-center mx-1">< Contact Me ></span>
+        <i class="nes-icon is-small heart"></i>
+      </div>
+      <div class="flex justify-center">
+        <a class="mx-5" th:href="@{https://github.com/kimujin99}">
+          <i class="nes-icon github"></i>
+        </a>
+        <a class="mx-5" th:href="@{https://velog.io/@kimujin99}">
+          <img th:src="@{/img/logo/velog_logo.png}" class="w-8 h-8">
+        </a>
+        <a class="mx-5" th:href="@{https://florentine-aries-53f.notion.site/JAVA-b886e6740f5e4347b50ce4841f4aa7fc}">
+          <img th:src="@{/img/logo/notion_logo.png}" class="w-8 h-8">
+        </a>
+      </div>
+      <div class="flex justify-center items-center my-3">
+        <i class="nes-icon google"></i>
+        <span class="text-white mx-2">tomatoo3o97@gmail.com</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
