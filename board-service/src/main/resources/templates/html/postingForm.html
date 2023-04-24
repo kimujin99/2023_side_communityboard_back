@@ -47,10 +47,19 @@
 
 <!--  main  -->
 <div class="flex flex-col items-center w-screen h-screen m-0">
-  <div class="nes-container with-title is-centered m-8" style="margin-top:126px; height: 1100px; width: 1030px;">
+  <div class="nes-container with-title is-centered m-8 table" style="margin-top:126px; height: 1100px; width: 1030px;">
     <p class="title">글쓰기</p>
 
+    <!--  오류 메시지  -->
+    <div th:if="${errs?.containsKey('postingTitle')}">
+      <span class="nes-text is-error" th:text="${errs['postingTitle']}"></span>
+    </div>
+    <div th:if="${errs?.containsKey('postingContent')}">
+      <span class="nes-text is-error" th:text="${errs['postingContent']}"></span>
+    </div>
+
     <form class="flex flex-col items-center h-full"
+          th:object="${dto}"
           th:action method="post">
       <!--  Info  -->
       <div class="nes-table-responsive m-2">
@@ -60,8 +69,7 @@
             <td class="w-2/12">카테고리</td>
             <td class="w-2/12">
               <div class="nes-select">
-                <select id="category_code" name="category_code" style="padding-top: 0px; padding-bottom: 0px;">
-                  <option value="" disabled selected hidden>선택</option>
+                <select th:field="*{categoryCode}" style="padding-top: 0px; padding-bottom: 0px;">
                   <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}"></option>
                 </select>
               </div>
@@ -75,7 +83,7 @@
           <tr>
             <td class="w-2/12">제목</td>
             <td colspan="3">
-              <input type="text" id="posting_title" name="posting_title" class="nes-input" style="padding-top: 0px; padding-bottom: 0px;">
+              <input type="text" th:field="*{postingTitle}" class="nes-input" style="padding-top: 0px; padding-bottom: 0px;">
             </td>
           </tr>
           </tbody>
@@ -83,7 +91,7 @@
       </div>
 
       <!--  CKEditor  -->
-      <textarea id="editor4" name="editor4"></textarea>
+      <textarea th:field="*{editor4}"></textarea>
 
       <!--  submit button  -->
       <button type="submit" class="nes-btn is-primary w-24 m-3">저장</button>
