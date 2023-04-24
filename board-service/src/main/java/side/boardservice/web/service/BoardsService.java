@@ -38,30 +38,15 @@ public class BoardsService {
 
     //게시물 리스트 가져오기
     public List<BoardListDTO> getBoardList() {
-        List<Boards> boardsList = boardsRepository.findAll(Sort.by(Sort.Direction.ASC, "postingCode"));
-        List<BoardListDTO> boardListDTOS = new ArrayList<>();
+        List<Boards> boardsList = boardsRepository.findAll(Sort.by(Sort.Direction.DESC, "viewCount"));
+        List<BoardListDTO> boardListDTOS = BoardsToDTOS(boardsList);
 
-        for (Boards boards : boardsList) {
-            //카테고리코드로 이름 가져오기
-            String categoryName = getCategoryName(boards.getCategoryCode());
-            //유저코드로 닉네임 가져오기
-            String userNickname = getUserNickname(boards.getUserCode());
+        return boardListDTOS;
+    }
 
-            //dto 생성
-            BoardListDTO dto = BoardListDTO.builder()
-                    .postingCode(boards.getPostingCode())
-                    .categoryName(categoryName)
-                    .userNickname(userNickname)
-                    .postingTitle(boards.getPostingTitle())
-                    .viewCount(boards.getViewCount())
-                    .build();
-
-            //insTime 설정
-            dto.timeSetting(dto, boards.getInsTime());
-            //dto를 리스트에 추가
-            boardListDTOS.add(dto);
-
-        }
+    public List<BoardListDTO> getBoardList(Long categoryCode) {
+        List<Boards> boardsList = boardsRepository.findByCategoryCode(categoryCode, Sort.by(Sort.Direction.DESC, "viewCount"));
+        List<BoardListDTO> boardListDTOS = BoardsToDTOS(boardsList);
 
         return boardListDTOS;
     }
@@ -76,7 +61,7 @@ public class BoardsService {
     }
 
     //카테고리 리스트 가져오기
-    public List<Category> categoryList() {
+    public List<Category> getcategoryList() {
         return categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "categoryCode"));
     }
 
@@ -106,6 +91,34 @@ public class BoardsService {
         dto.timeSetting(dto, board.getInsTime(), board.getUpdTime());
 
         return dto;
+    }
+
+    public List<BoardListDTO> BoardsToDTOS(List<Boards> boardsList) {
+        List<BoardListDTO> boardListDTOS = new ArrayList<>();
+
+        for (Boards boards : boardsList) {
+            //카테고리코드로 이름 가져오기
+            String categoryName = getCategoryName(boards.getCategoryCode());
+            //유저코드로 닉네임 가져오기
+            String userNickname = getUserNickname(boards.getUserCode());
+
+            //dto 생성
+            BoardListDTO dto = BoardListDTO.builder()
+                    .postingCode(boards.getPostingCode())
+                    .categoryName(categoryName)
+                    .userNickname(userNickname)
+                    .postingTitle(boards.getPostingTitle())
+                    .viewCount(boards.getViewCount())
+                    .build();
+
+            //insTime 설정
+            dto.timeSetting(dto, boards.getInsTime());
+            //dto를 리스트에 추가
+            boardListDTOS.add(dto);
+
+        }
+
+        return boardListDTOS;
     }
 
 }

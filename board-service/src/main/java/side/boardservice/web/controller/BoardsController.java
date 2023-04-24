@@ -27,9 +27,17 @@ public class BoardsController {
 
     //글목록(게시판 홈) 페이지로 이동
     @GetMapping
-    public String getAllPostings(Model model){
-        List<BoardListDTO> boardList = boardsService.getBoardList();
-        List<Category> categoryList = boardsService.categoryList();
+    public String getAllPostings(
+            @RequestParam(value = "categoryCode", required = false) Long categoryCode,
+            Model model){
+        log.info("categoryCode : {}", categoryCode);
+        List<BoardListDTO> boardList =  null;
+
+        if(categoryCode == null || categoryCode == 0) {
+            boardList = boardsService.getBoardList();
+        } else {
+            boardList = boardsService.getBoardList(categoryCode);
+        }
 
         addCategoryListToModel(model);
 

@@ -55,16 +55,25 @@
     <div class="nes-container with-title is-centered m-8 table" style="margin-top:126px; height: 1100px; width: 1030px;">
         <p class="title">게시판</p>
         <!--    header    -->
-        <div class="flex justify-end">
+        <div class="flex justify-between">
             <div class="flex flex-row justify-center items-center m-2">
-                <label for="default_select" class="w-24">카테고리</label>
-                <div class="nes-select">
-                    <select id="default_select" style="padding-top: 0px; padding-bottom: 0px;">
-                        <option value="" disabled selected hidden>선택</option>
-                        <option value="0">전체</option>
-                        <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}"></option>
-                    </select>
-                </div>
+                <a th:text="전체"
+                   th:href="@{/boards?categoryCode=0}"
+                   class="mx-3">
+                </a>
+                <a th:each="val : ${categoryList}" th:text="${val.categoryName}"
+                   th:href="|@{/boards?categoryCode={categoryCode}(categoryCode=${val.categoryCode})}|"
+                   class="mx-3">
+                </a>
+<!--                <label for="default_select" class="w-24">카테고리</label>-->
+<!--                <div class="nes-select">-->
+<!--                    <form>-->
+<!--                        <select id="default_select" style="padding-top: 0px; padding-bottom: 0px;">-->
+<!--                            <option value="0">전체</option>-->
+<!--                            <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}"></option>-->
+<!--                        </select>-->
+<!--                    </form>-->
+<!--                </div>-->
             </div>
             <div class="m-2">
                 <button class="nes-btn is-primary"
@@ -104,7 +113,6 @@
 
         <div>
             <button class="nes-btn is-primary"
-                    th:onclick=""
                     type="button">페이징</button>
         </div>
     </div>
