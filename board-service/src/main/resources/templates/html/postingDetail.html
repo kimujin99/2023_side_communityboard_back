@@ -107,7 +107,8 @@
 
       <!--  button  -->
       <div class="flex justify-center">
-        <button type="button" class="nes-btn is-primary w-24 m-3">수정</button>
+        <button th:onclick="|location.href='@{/boards/{postingCode}/edit(postingCode=${details.postingCode})}'|"
+                type="button" class="nes-btn is-primary w-24 m-3">수정</button>
         <button id="show_delete_modal" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
       </div>
 

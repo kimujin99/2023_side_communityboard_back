@@ -14,6 +14,7 @@ import side.boardservice.domain.category.dto.CategoryListDTO;
 import side.boardservice.domain.user.User;
 import side.boardservice.domain.user.UserRepository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,22 @@ public class BoardsService {
     //게시물 저장하기(신규)
     public void savePosting(Long categoryCode, String postingTitle, String postingContent) {
         Boards boards = new Boards(categoryCode, 1L, postingTitle, postingContent);
+
+        boardsRepository.save(boards);
+    }
+
+    //게시물 저장하기(수정)
+    public void savePosting(Long postingCode, Long categoryCode, String postingTitle, String postingContent) {
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Boards boards = boardsRepository.findByPostingCode(postingCode);
+        boards.setPostingCode(postingCode);
+        boards.setCategoryCode(categoryCode);
+        boards.setPostingTitle(postingTitle);
+        boards.setPostingContent(postingContent);
+        boards.setUpdTime(now);
+
+        log.info(" <---  서비스 진입!  --->");
 
         boardsRepository.save(boards);
     }
