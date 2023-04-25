@@ -96,9 +96,15 @@ public class BoardsService {
     public List<BoardListDTO> BoardsToDTOS(List<Boards> boardsList) {
         List<BoardListDTO> boardListDTOS = new ArrayList<>();
 
+        //카테고리리스트 가져오기
+        List<Category> categoryList = categoryRepository.findAll();
+        //Map으로 저장
+        CategoryListDTO categoryListDTO = new CategoryListDTO();
+        categoryListDTO.setCategoryListToMap(categoryList);
+
         for (Boards boards : boardsList) {
             //카테고리코드로 이름 가져오기
-            String categoryName = getCategoryName(boards.getCategoryCode());
+            String categoryName = categoryListDTO.getCategoryMap().get(boards.getCategoryCode());
             //유저코드로 닉네임 가져오기
             String userNickname = getUserNickname(boards.getUserCode());
 
