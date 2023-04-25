@@ -1,0 +1,72 @@
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.window_98 {
+    background : silver;
+    box-shadow : inset -1px -1px #0a0a0a,
+        inset 1px 1px #dfdfdf,
+        inset -2px -2px grey,
+        inset 2px 2px #fff;
+    padding : 3px;
+    margin: 32px;
+    width: 400px;
+    height: 150px;
+}
+
+.title_bar_98 {
+    align-items : center;
+    background : linear-gradient(90deg,navy,#1084d0);
+    display : flex;
+    justify-content : space-between;
+    padding : 3px 2px 3px 3px;
+}
+
+.title-bar-text_98 {
+    color : #fff;
+    font-weight : 700;
+    letter-spacing : 0;
+    margin-right : 24px;
+}
+
+.window-body_98 {
+    margin : 8px;
+    height : 70%;
+    display : flex;
+    flex-direction : column;
+    justify-content : space-between;
+}
+
+.window-body-text_98 {
+    margin : 14px 0;
+}
+
+.field-row_98 {
+    align-items : center;
+    display : flex;
+}
+
+.button_98 {
+    background : silver;
+    box-shadow : inset -1px -1px #0a0a0a,
+        inset 1px 1px #dfdfdf,
+        inset -2px -2px grey,
+        inset 2px 2px #fff;
+
+    border : none;
+    border-radius : 0;
+    box-sizing : border-box;
+    color : transparent;
+    padding : 2px 24px;
+    margin-left : 6px;
+    text-shadow : 0 0 #222;
+}
+.button_98:focus {
+   outline: 1px dotted #000000;
+   outline-offset: -4px;
+ }
+
+ .button_98:not(:disabled):active {
+   box-shadow: inset -1px -1px #ffffff, inset -2px -2px #dfdfdf;
+   text-shadow: 1px 1px #222222;
+ }

@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!--  link  -->
-  <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+  <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet"/>
+  <link th:href="@{/css/modal.css}" rel="stylesheet"/>
   <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 
   <!--  script  -->
@@ -107,8 +108,28 @@
       <!--  button  -->
       <div class="flex justify-center">
         <button type="button" class="nes-btn is-primary w-24 m-3">수정</button>
-        <button type="button" class="nes-btn is-error w-24 m-3">삭제</button>
+        <button id="show_delete_modal" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
       </div>
+
+      <dialog style="background-color:transparent;">
+        <div class="window_98">
+          <div class="title_bar_98">
+            <div class="title-bar-text_98">
+              ! Warning !
+            </div>
+          </div>
+          <div class="window-body_98">
+            <div class="flex justify-center">
+              <p class="window-body-text_98">정말 삭제하시겠습니까...?</p>
+              <img th:src="@{/img/icon/sad_file.png}" style="height:45px; width:45px; margin-left:6px;">
+            </div>
+            <section class="field-row_98" style="justify-content: flex-end">
+              <button th:onclick="|location.href='@{/boards/{postingCode}/delete(postingCode=${details.postingCode})}'|" class="button_98">삭제</button>
+              <button id="close_delete_modal" class="button_98">취소</button>
+            </section>
+          </div>
+        </div>
+      </dialog>
 
     </div>
 
@@ -150,6 +171,9 @@
       </div>
     </div>
   </footer>
+
+  <!--  script  -->
+  <script type="text/javascript" th:src="@{/js/modal.js}"></script>
 </div>
 
 </body>
