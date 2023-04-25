@@ -16,6 +16,7 @@ import side.boardservice.web.service.BoardsService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Controller
@@ -47,7 +48,7 @@ public class BoardsController {
 
     //글작성 페이지로 이동
     @GetMapping("/write")
-    public String writePost(Model model){
+    public String writePosting(Model model){
         addCategoryListToModel(model);
         model.addAttribute("dto", new BoardWriteDTO());
         return "html/postingForm";
@@ -55,7 +56,7 @@ public class BoardsController {
 
     //글 저장
     @PostMapping("/write")
-    public String savePost(@ModelAttribute("dto") BoardWriteDTO dto, Model model){
+    public String savePosting(@ModelAttribute("dto") BoardWriteDTO dto, Model model){
 
         Long categoryCode = dto.getCategoryCode();
         String postingTitle = dto.getPostingTitle();
@@ -89,10 +90,18 @@ public class BoardsController {
 
     //글 상세 페이지로 이동
     @GetMapping("/{postingCode}")
-    public String showDetails(@PathVariable long postingCode, Model model){
+    public String showPostingDetails(@PathVariable long postingCode, Model model){
         BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
+        boardDetail.setPostingCode(postingCode);
         model.addAttribute("details", boardDetail);
         return "html/postingDetail";
+    }
+
+    //글 삭제
+    @GetMapping("/{postingCode}/delete")
+    public String deletePosting(@PathVariable long postingCode) {
+        boardsService.deletePosting(postingCode);
+        return "redirect:/boards";
     }
 
     //카테고리 리스트 불러와서 Model에 넘기는 함수

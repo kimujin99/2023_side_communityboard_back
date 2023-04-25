@@ -1,5 +1,6 @@
 package side.boardservice.web.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -9,12 +10,14 @@ import side.boardservice.domain.board.dto.BoardDetailDTO;
 import side.boardservice.domain.board.dto.BoardListDTO;
 import side.boardservice.domain.category.Category;
 import side.boardservice.domain.category.CategoryRepository;
+import side.boardservice.domain.category.dto.CategoryListDTO;
 import side.boardservice.domain.user.User;
 import side.boardservice.domain.user.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class BoardsService {
     @Autowired
@@ -24,10 +27,15 @@ public class BoardsService {
     @Autowired
     BoardsRepository boardsRepository;
 
-    public String getCategoryName(Long categoryCode) {
+    public String getCategoryNameById(Long categoryCode) {
         Category category = categoryRepository.findByCategoryCode(categoryCode);
 
         return category.getCategoryName();
+    }
+
+    public Long getCategoryCodeByName(String categoryName) {
+        Category category = categoryRepository.findByCategoryName(categoryName);
+        return category.getCategoryCode();
     }
 
     public String getUserNickname(Long userCode) {
@@ -51,13 +59,15 @@ public class BoardsService {
         return boardListDTOS;
     }
 
-    //게시물 저장하기
-    public Integer savePosting(Long categoryCode, String postingTitle, String postingContent) {
+    //게시물 저장하기(신규)
+    public void savePosting(Long categoryCode, String postingTitle, String postingContent) {
         Boards boards = new Boards(categoryCode, 1L, postingTitle, postingContent);
 
         boardsRepository.save(boards);
+    }
 
-        return 1;
+    public void deletePosting(Long postingCode) {
+        boardsRepository.deleteById(postingCode);
     }
 
     //카테고리 리스트 가져오기
@@ -75,11 +85,12 @@ public class BoardsService {
         boardsRepository.save(board);
 
         //카테고리코드로 이름 가져오기
-        String categoryName = getCategoryName(board.getCategoryCode());
+        String categoryName = getCategoryNameById(board.getCategoryCode());
         //유저코드로 닉네임 가져오기
         String userNickname = getUserNickname(board.getUserCode());
 
         BoardDetailDTO dto = BoardDetailDTO.builder()
+                .postingCode(postingCode)
                 .categoryName(categoryName)
                 .userNickname(userNickname)
                 .postingTitle(board.getPostingTitle())

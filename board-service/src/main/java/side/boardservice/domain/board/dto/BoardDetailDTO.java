@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 @Setter
 @Builder
 public class BoardDetailDTO {
+    private Long postingCode;
     private String categoryName;
     private String userNickname;
     private String postingTitle;
