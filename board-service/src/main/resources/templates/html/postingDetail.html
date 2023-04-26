@@ -7,7 +7,8 @@
 
   <!--  link  -->
   <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet"/>
-  <link th:href="@{/css/modal.css}" rel="stylesheet"/>
+  <link th:href="@{/css/modal.css?after}" rel="stylesheet"/>
+  <link th:href="@{/css/reply.css?after}" rel="stylesheet"/>
   <link th:href="@{/css/styles.css}" rel="stylesheet"/>
 
   <!--  script  -->
@@ -53,7 +54,7 @@
     <div class="flex flex-col items-center h-full">
       <!--  Info  -->
       <div class="nes-table-responsive m-2 h-full">
-        <table class="nes-table is-bordered is-centered" style="width:99%; height:99%">
+        <table class="nes-table is-bordered is-centered" style="width:99%; height:98%">
           <tbody>
 
           <tr>
@@ -112,6 +113,62 @@
         <button id="show_delete_modal" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
       </div>
 
+      <!--   reply   -->
+      <div class="reply-boby_98 w-full block">
+        <div style="text-align:left;">
+          <p style="margin:6px;" th:text="|0개의 댓글|"></p>
+        </div>
+
+        <!--  write reply  -->
+        <form class="fieldset_98" th:action method="post">
+          <div class="field-row_98">
+            <img class="nes-avatar is-medium is-rounded" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+            <p th:text="|admin0|" style="margin-left:8px"></p>
+          </div>
+
+          <div class="field_row-stacked_98">
+            <textarea maxlength="500" id="textarea_98" class="field-textarea_98" placeholder="댓글을 입력해주세요..."></textarea>
+          </div>
+
+          <div class="field-row_98" style="justify-content:space-between;">
+            <button type="button" class="button_98 flex items-center">
+              <img th:src="@{/img/emojis/main_emoji.png}" style="width:16px; height:16px;">
+              <p style="margin-left:6px">이모지</p>
+            </button>
+            <div class="textLengthWrap">
+              <p class="textCount">0</p>
+              <p class="textTotal">/500</p>
+            </div>
+          </div>
+
+          <div class="field-row_98" style="justify-content:end;">
+            <button type="submit" class="button_98">등록</button>
+          </div>
+        </form>
+
+        <!--  reply list  -->
+        <div class="fieldset_98 my-3 w-full h-fit">
+          <section th:each="val : ${replyList}"
+
+                  class="replyList_98">
+            <input hidden th:value="${val.replyCode}">
+            <div class="field-row_98">
+              <img class="nes-avatar is-medium is-rounded" th:src="|@{${val.userProfile}}|" style="image-rendering: pixelated;">
+              <p th:text="${val.userNickname}" style="margin-left:8px"></p>
+            </div>
+
+            <div class="field_row-stacked_98">
+              <div class="pre_98 h-fit" style="min-height:100px; text-align:left;" th:text="${val.replyContent}">
+              </div>
+            </div>
+
+            <div class="field-row_98 justify-end" th:text="${val.insTime}">
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!--   dialog modal   -->
       <dialog style="background-color:transparent;">
         <div class="window_98">
           <div class="title_bar_98">
@@ -126,7 +183,7 @@
             </div>
             <section class="field-row_98" style="justify-content: flex-end">
               <button th:onclick="|location.href='@{/boards/{postingCode}/delete(postingCode=${details.postingCode})}'|" class="button_98">삭제</button>
-              <button id="close_delete_modal" class="button_98">취소</button>
+              <button id="close_delete_modal" class="button_98" style="margin-left: 6px;">취소</button>
             </section>
           </div>
         </div>
@@ -175,6 +232,7 @@
 
   <!--  script  -->
   <script type="text/javascript" th:src="@{/js/modal.js}"></script>
+  <script type="text/javascript" th:src="@{/js/reply.js}"></script>
 </div>
 
 </body>

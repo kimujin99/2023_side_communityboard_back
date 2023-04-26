@@ -58,7 +58,6 @@ dialog::backdrop {
     box-sizing : border-box;
     color : transparent;
     padding : 2px 24px;
-    margin-left : 6px;
     text-shadow : 0 0 #222;
 }
 .button_98:focus {
