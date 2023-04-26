@@ -11,6 +11,7 @@ import side.boardservice.domain.board.dto.BoardDetailDTO;
 import side.boardservice.domain.board.dto.BoardListDTO;
 import side.boardservice.domain.board.dto.BoardWriteDTO;
 import side.boardservice.domain.category.Category;
+import side.boardservice.domain.reply.dto.ReplyListDTO;
 import side.boardservice.web.service.BoardsService;
 
 import java.util.HashMap;
@@ -83,9 +84,14 @@ public class BoardsController {
     //글 상세 페이지로 이동
     @GetMapping("/{postingCode}")
     public String showPostingDetails(@PathVariable long postingCode, Model model){
+        //게시물 상세 가져오기
         BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
         boardDetail.setPostingCode(postingCode);
         model.addAttribute("details", boardDetail);
+
+        //댓글 리스트 가져오기
+        List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
+        model.addAttribute("replyList", replyList);
         return "html/postingDetail";
     }
 

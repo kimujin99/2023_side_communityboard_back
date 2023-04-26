@@ -1,5 +1,6 @@
 package side.boardservice.web.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -11,6 +12,9 @@ import side.boardservice.domain.board.dto.BoardListDTO;
 import side.boardservice.domain.category.Category;
 import side.boardservice.domain.category.CategoryRepository;
 import side.boardservice.domain.category.dto.CategoryListDTO;
+import side.boardservice.domain.reply.Reply;
+import side.boardservice.domain.reply.ReplyRepository;
+import side.boardservice.domain.reply.dto.ReplyListDTO;
 import side.boardservice.domain.user.User;
 import side.boardservice.domain.user.UserRepository;
 
@@ -27,6 +31,8 @@ public class BoardsService {
     CategoryRepository categoryRepository;
     @Autowired
     BoardsRepository boardsRepository;
+    @Autowired
+    ReplyRepository replyRepository;
 
     public String getCategoryNameById(Long categoryCode) {
         Category category = categoryRepository.findByCategoryCode(categoryCode);
@@ -121,6 +127,7 @@ public class BoardsService {
         return dto;
     }
 
+    //Boards를 BoardListDTO로 변환해주는 메소드
     public List<BoardListDTO> BoardsToDTOS(List<Boards> boardsList) {
         List<BoardListDTO> boardListDTOS = new ArrayList<>();
 
@@ -155,4 +162,33 @@ public class BoardsService {
         return boardListDTOS;
     }
 
+    //댓글 리스트 가져오기
+    public List<ReplyListDTO> getReplyList(Long postingCode){
+        //게시물 코드로 댓글 리스트 뽑기
+        List<Reply> replyList = replyRepository.findByPostingCode(postingCode, Sort.by(Sort.Direction.ASC, "replyCode"));
+        List<ReplyListDTO> replyListDTOS = new ArrayList<>();
+
+        //DTO객체 리스트로 변환
+        for(Reply reply : replyList) {
+            //유저코드로 프로필, 이름 가져오기
+            Long userCode = reply.getUserCode();
+            User user = userRepository.findByUserCode(userCode);
+            String userProfile = user.getUserProfilePath();
+            String userNickname = user.getUserNickname();
+
+            ReplyListDTO dto = ReplyListDTO.builder()
+                    .replyCode(reply.getReplyCode())
+                    .userNickname(userNickname)
+                    .userProfile(userProfile)
+                    .replyContent(reply.getReplyContent())
+                    .build();
+
+            //insTime 설정
+            dto.timeSetting(dto, reply.getInsTime());
+            //dto를 리스트에 추가
+            replyListDTOS.add(dto);
+        }
+
+        return  replyListDTOS;
+    }
 }
