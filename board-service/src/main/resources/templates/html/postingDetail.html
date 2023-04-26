@@ -147,7 +147,8 @@
         </form>
 
         <!--  reply list  -->
-        <div class="fieldset_98 my-3 w-full h-fit">
+        <div th:if="${replyList != null and not #lists.isEmpty(replyList)}"
+                class="fieldset_98 my-3 w-full h-fit">
           <section th:each="val : ${replyList}"
 
                   class="replyList_98">
