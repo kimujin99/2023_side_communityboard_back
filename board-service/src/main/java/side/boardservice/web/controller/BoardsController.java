@@ -92,6 +92,10 @@ public class BoardsController {
         //댓글 리스트 가져오기
         List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
         model.addAttribute("replyList", replyList);
+
+        //댓글 갯수 가져오기
+        int cnt = replyList.size();
+        model.addAttribute("cnt", cnt);
         return "html/postingDetail";
     }
 
