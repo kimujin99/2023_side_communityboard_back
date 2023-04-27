@@ -12,6 +12,7 @@ import side.boardservice.domain.board.dto.BoardListDTO;
 import side.boardservice.domain.board.dto.BoardWriteDTO;
 import side.boardservice.domain.category.Category;
 import side.boardservice.domain.reply.dto.ReplyListDTO;
+import side.boardservice.domain.reply.dto.ReplyWriteDTO;
 import side.boardservice.web.service.BoardsService;
 
 import java.util.HashMap;
@@ -84,18 +85,11 @@ public class BoardsController {
     //글 상세 페이지로 이동
     @GetMapping("/{postingCode}")
     public String showPostingDetails(@PathVariable long postingCode, Model model){
-        //게시물 상세 가져오기
-        BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
-        boardDetail.setPostingCode(postingCode);
-        model.addAttribute("details", boardDetail);
+        //상세 페이지 가져오기
+        postingDetailsToModel(postingCode, model);
 
-        //댓글 리스트 가져오기
-        List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
-        model.addAttribute("replyList", replyList);
-
-        //댓글 갯수 가져오기
-        int cnt = replyList.size();
-        model.addAttribute("cnt", cnt);
+        //댓글 작성용 모델
+        model.addAttribute("replyForm", new ReplyWriteDTO());
         return "html/postingDetail";
     }
 
@@ -160,6 +154,41 @@ public class BoardsController {
         return "redirect:/boards/{postingCode}";
     }
 
+    //댓글 저장
+    @PostMapping("/{postingCode}/reply")
+    public String saveReply(@PathVariable("postingCode") Long postingCode,
+                            @ModelAttribute("replyForm") ReplyWriteDTO replyWriteDTO,
+                            Model model) {
+        //redirection시 이전 스크롤위치 정보 확인
+        log.info("scrollPosition : {}", replyWriteDTO.getScrollPosition());
+
+        String replyContent = replyWriteDTO.getReplyContent();
+
+        //검증 오류 결과 보관
+        Map<String, String> errs = new ConcurrentHashMap<>();
+
+        //검증 로직
+        if (!StringUtils.hasText(replyContent)) {
+            errs.put("replyContent", "ERROR : 내용을 입력해주세요!");
+        }
+
+        //실패 로직
+        if(!errs.isEmpty()) {
+            log.info("error : {}", errs);
+            //에러 메시지
+            model.addAttribute("errs", errs);
+
+            postingDetailsToModel(postingCode, model);
+            return "html/postingDetail";
+        }
+
+        //성공 로직
+        replyWriteDTO.setPostingCode(postingCode);
+        boardsService.saveReply(replyWriteDTO);
+        return "redirect:/boards/{postingCode}";
+    }
+
+
     //카테고리 리스트 불러와서 Model에 넘기는 함수
     public void addCategoryListToModel(Model model) {
         List<Category> categoryList = boardsService.getcategoryList();
@@ -186,5 +215,20 @@ public class BoardsController {
         }
 
         return errs;
+    }
+
+    //글 상세 페이지로 가는 함수
+    public void postingDetailsToModel(Long postingCode, Model model) {
+        BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
+        boardDetail.setPostingCode(postingCode);
+        model.addAttribute("details", boardDetail);
+
+        //댓글 리스트 가져오기
+        List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
+        model.addAttribute("replyList", replyList);
+
+        //댓글 갯수 가져오기
+        int cnt = replyList.size();
+        model.addAttribute("cnt", cnt);
     }
 }

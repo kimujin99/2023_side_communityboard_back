@@ -120,18 +120,26 @@
         </div>
 
         <!--  write reply  -->
-        <form class="fieldset_98" th:action method="post">
+        <form class="fieldset_98"
+              th:action="|@{/boards/{postingCode}/reply(postingCode=${details.postingCode})}|" method="post"
+              th:object="${replyForm}">
           <div class="field-row_98">
-            <img class="nes-avatar is-medium is-rounded" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+            <img th:src="@{/img/profile/kimujin99.JPG}" class="nes-avatar is-medium is-rounded" style="image-rendering: pixelated;">
             <p th:text="|admin0|" style="margin-left:8px"></p>
           </div>
 
+          <!--  오류 메시지  -->
+          <div th:if="${errs?.containsKey('replyContent')}">
+            <span class="nes-text is-error" th:text="${errs['replyContent']}"></span>
+          </div>
+
           <div class="field_row-stacked_98">
-            <textarea maxlength="500" id="textarea_98" class="field-textarea_98" placeholder="댓글을 입력해주세요..."></textarea>
+            <textarea th:field="*{replyContent}"
+                    maxlength="500" id="textarea_98" class="field-textarea_98" placeholder="댓글을 입력해주세요..."></textarea>
           </div>
 
           <div class="field-row_98" style="justify-content:space-between;">
-            <button type="button" class="button_98 flex items-center">
+            <button type="button" class="button_98 nes-pointer flex items-center">
               <img th:src="@{/img/emojis/main_emoji.png}" style="width:16px; height:16px;">
               <p style="margin-left:6px">이모지</p>
             </button>
@@ -141,8 +149,23 @@
             </div>
           </div>
 
+          <script th:inline="javascript">
+              /* 이전 페이지에서 전달받은 스크롤 위치 */
+              var scrollPosition = [[${replyForm.scrollPosition}]];
+
+              if(scrollPosition == null || scrollPosition == '') {
+                 scrollPosition = 0;
+              }
+
+              console.log(scrollPosition);
+              /* 스크롤 위치 유지 */
+              window.scrollTo(0, scrollPosition);
+          </script>
+
+          <input type="hidden" th:field="*{scrollPosition}">
+
           <div class="field-row_98" style="justify-content:end;">
-            <button type="submit" class="button_98">등록</button>
+            <button type="submit" onclick="setScrollPosition()" class="button_98 nes-pointer">등록</button>
           </div>
         </form>
 

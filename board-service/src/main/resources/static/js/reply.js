@@ -18,3 +18,11 @@ textarea.addEventListener("keyup", (e)=>{
         document.querySelector(".textCount").innerText = 500;
     }
 });
+
+const scrollInput = document.getElementById("scrollPosition");
+
+//스크롤의 현재 위치 세팅
+function setScrollPosition() {
+    let scrollPosition = window.scrollY;
+    scrollInput.value = scrollPosition
+}

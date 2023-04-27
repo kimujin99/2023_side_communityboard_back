@@ -15,6 +15,7 @@ import side.boardservice.domain.category.dto.CategoryListDTO;
 import side.boardservice.domain.reply.Reply;
 import side.boardservice.domain.reply.ReplyRepository;
 import side.boardservice.domain.reply.dto.ReplyListDTO;
+import side.boardservice.domain.reply.dto.ReplyWriteDTO;
 import side.boardservice.domain.user.User;
 import side.boardservice.domain.user.UserRepository;
 
@@ -144,6 +145,16 @@ public class BoardsService {
     //댓글 삭제
     public void deleteReply(Long replyCode) {
         replyRepository.deleteById(replyCode);
+    }
+
+    //댓글 저장
+    public void saveReply(ReplyWriteDTO replyWriteDTO) {
+        Reply reply = new Reply();
+        reply.setPostingCode(replyWriteDTO.getPostingCode());
+        reply.setUserCode(1L);
+        reply.setReplyContent(replyWriteDTO.getReplyContent());
+
+        replyRepository.save(reply);
     }
 
     //카테고리 코드로 이름 가져오는 함수
