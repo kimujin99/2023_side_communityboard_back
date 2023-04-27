@@ -153,6 +153,13 @@ public class BoardsController {
         return "redirect:/boards/{postingCode}";
     }
 
+    //댓글 삭제
+    @GetMapping("/{postingCode}/{replyCode}/delete")
+    public String deleteReply(@PathVariable("replyCode") Long replyCode) {
+        boardsService.deleteReply(replyCode);
+        return "redirect:/boards/{postingCode}";
+    }
+
     //카테고리 리스트 불러와서 Model에 넘기는 함수
     public void addCategoryListToModel(Model model) {
         List<Category> categoryList = boardsService.getcategoryList();

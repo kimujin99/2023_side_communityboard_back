@@ -34,23 +34,6 @@ public class BoardsService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public String getCategoryNameById(Long categoryCode) {
-        Category category = categoryRepository.findByCategoryCode(categoryCode);
-
-        return category.getCategoryName();
-    }
-
-    public Long getCategoryCodeByName(String categoryName) {
-        Category category = categoryRepository.findByCategoryName(categoryName);
-        return category.getCategoryCode();
-    }
-
-    public String getUserNickname(Long userCode) {
-        User user = userRepository.findByUserCode(userCode);
-
-        return user.getUserNickname();
-    }
-
     //게시물 리스트 가져오기
     public List<BoardListDTO> getBoardList() {
         List<Boards> boardsList = boardsRepository.findAll(Sort.by(Sort.Direction.DESC, "viewCount"));
@@ -89,6 +72,7 @@ public class BoardsService {
         boardsRepository.save(boards);
     }
 
+    //게시물 삭제
     public void deletePosting(Long postingCode) {
         boardsRepository.deleteById(postingCode);
     }
@@ -110,7 +94,7 @@ public class BoardsService {
         //카테고리코드로 이름 가져오기
         String categoryName = getCategoryNameById(board.getCategoryCode());
         //유저코드로 닉네임 가져오기
-        String userNickname = getUserNickname(board.getUserCode());
+        String userNickname = getUserNicknameByCode(board.getUserCode());
 
         BoardDetailDTO dto = BoardDetailDTO.builder()
                 .postingCode(postingCode)
@@ -125,41 +109,6 @@ public class BoardsService {
         dto.timeSetting(dto, board.getInsTime(), board.getUpdTime());
 
         return dto;
-    }
-
-    //Boards를 BoardListDTO로 변환해주는 메소드
-    public List<BoardListDTO> BoardsToDTOS(List<Boards> boardsList) {
-        List<BoardListDTO> boardListDTOS = new ArrayList<>();
-
-        //카테고리리스트 가져오기
-        List<Category> categoryList = categoryRepository.findAll();
-        //Map으로 저장
-        CategoryListDTO categoryListDTO = new CategoryListDTO();
-        categoryListDTO.setCategoryListToMap(categoryList);
-
-        for (Boards boards : boardsList) {
-            //카테고리코드로 이름 가져오기
-            String categoryName = categoryListDTO.getCategoryMap().get(boards.getCategoryCode());
-            //유저코드로 닉네임 가져오기
-            String userNickname = getUserNickname(boards.getUserCode());
-
-            //dto 생성
-            BoardListDTO dto = BoardListDTO.builder()
-                    .postingCode(boards.getPostingCode())
-                    .categoryName(categoryName)
-                    .userNickname(userNickname)
-                    .postingTitle(boards.getPostingTitle())
-                    .viewCount(boards.getViewCount())
-                    .build();
-
-            //insTime 설정
-            dto.timeSetting(dto, boards.getInsTime());
-            //dto를 리스트에 추가
-            boardListDTOS.add(dto);
-
-        }
-
-        return boardListDTOS;
     }
 
     //댓글 리스트 가져오기
@@ -190,5 +139,65 @@ public class BoardsService {
         }
 
         return  replyListDTOS;
+    }
+
+    //댓글 삭제
+    public void deleteReply(Long replyCode) {
+        replyRepository.deleteById(replyCode);
+    }
+
+    //카테고리 코드로 이름 가져오는 함수
+    public String getCategoryNameById(Long categoryCode) {
+        Category category = categoryRepository.findByCategoryCode(categoryCode);
+
+        return category.getCategoryName();
+    }
+
+    //카테고리 이름으로 코드 가져오는 함수
+    public Long getCategoryCodeByName(String categoryName) {
+        Category category = categoryRepository.findByCategoryName(categoryName);
+        return category.getCategoryCode();
+    }
+
+    //유저 코드로 닉네임 가져오는 함수
+    public String getUserNicknameByCode(Long userCode) {
+        User user = userRepository.findByUserCode(userCode);
+
+        return user.getUserNickname();
+    }
+
+    //Boards를 BoardListDTO로 변환해주는 함수
+    public List<BoardListDTO> BoardsToDTOS(List<Boards> boardsList) {
+        List<BoardListDTO> boardListDTOS = new ArrayList<>();
+
+        //카테고리리스트 가져오기
+        List<Category> categoryList = categoryRepository.findAll();
+        //Map으로 저장
+        CategoryListDTO categoryListDTO = new CategoryListDTO();
+        categoryListDTO.setCategoryListToMap(categoryList);
+
+        for (Boards boards : boardsList) {
+            //카테고리코드로 이름 가져오기
+            String categoryName = categoryListDTO.getCategoryMap().get(boards.getCategoryCode());
+            //유저코드로 닉네임 가져오기
+            String userNickname = getUserNicknameByCode(boards.getUserCode());
+
+            //dto 생성
+            BoardListDTO dto = BoardListDTO.builder()
+                    .postingCode(boards.getPostingCode())
+                    .categoryName(categoryName)
+                    .userNickname(userNickname)
+                    .postingTitle(boards.getPostingTitle())
+                    .viewCount(boards.getViewCount())
+                    .build();
+
+            //insTime 설정
+            dto.timeSetting(dto, boards.getInsTime());
+            //dto를 리스트에 추가
+            boardListDTOS.add(dto);
+
+        }
+
+        return boardListDTOS;
     }
 }

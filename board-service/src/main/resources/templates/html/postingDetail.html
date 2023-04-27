@@ -110,7 +110,7 @@
       <div class="flex justify-center">
         <button th:onclick="|location.href='@{/boards/{postingCode}/edit(postingCode=${details.postingCode})}'|"
                 type="button" class="nes-btn is-primary w-24 m-3">수정</button>
-        <button id="show_delete_modal" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
+        <button onclick="showModalAndSetDelLink('posting', '', '')" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
       </div>
 
       <!--   reply   -->
@@ -149,21 +149,27 @@
         <!--  reply list  -->
         <div th:if="${replyList != null and not #lists.isEmpty(replyList)}"
                 class="fieldset_98 my-3 w-full h-fit">
-          <section th:each="val : ${replyList}"
+          <section  th:each="val : ${replyList}" class="replyList_98 my-3">
+            <div class="field-row_98 justify-between">
+              <div class="flex items-center">
+                <img class="nes-avatar is-medium is-rounded" th:src="|@{${val.userProfile}}|" style="image-rendering: pixelated;">
+                <p th:text="${val.userNickname}" style="margin-left:8px"></p>
+              </div>
 
-                  class="replyList_98">
-            <input hidden th:value="${val.replyCode}">
-            <div class="field-row_98">
-              <img class="nes-avatar is-medium is-rounded" th:src="|@{${val.userProfile}}|" style="image-rendering: pixelated;">
-              <p th:text="${val.userNickname}" style="margin-left:8px"></p>
+              <div th:text="${val.insTime}">
+              </div>
             </div>
 
             <div class="field_row-stacked_98">
               <div class="pre_98 h-fit" style="min-height:100px; text-align:left;" th:text="${val.replyContent}">
               </div>
-            </div>
 
-            <div class="field-row_98 justify-end" th:text="${val.insTime}">
+              <div class="flex justify-end">
+                <button th:postingCode="${details.postingCode}"
+                        th:replyCode="${val.replyCode}"
+                        onclick="showModalAndSetDelLink('reply', this.getAttribute('postingCode'), this.getAttribute('replyCode'))"
+                        type="button" class="button_98 nes-pointer justify-end">삭제</button>
+              </div>
             </div>
           </section>
         </div>
@@ -183,8 +189,15 @@
               <img th:src="@{/img/icon/sad_file.png}" style="height:45px; width:45px; margin-left:6px;">
             </div>
             <section class="field-row_98" style="justify-content: flex-end">
-              <button th:onclick="|location.href='@{/boards/{postingCode}/delete(postingCode=${details.postingCode})}'|" class="button_98">삭제</button>
-              <button id="close_delete_modal" class="button_98" style="margin-left: 6px;">취소</button>
+              <button style="display:none"
+                      id="modal_del_btn_P"
+                      th:onclick="|location.href='@{/boards/{postingCode}/delete(postingCode=${details.postingCode})}'|"
+                      class="button_98 nes-pointer">삭제</button>
+              <button style="display:none"
+                      id="modal_del_btn_R"
+                      th:onclick="|location.href='@{/boards/{postingCode}/1/delete(postingCode=${details.postingCode})}'|"
+                      class="button_98 nes-pointer">삭제</button>
+              <button id="close_delete_modal" class="button_98 nes-pointer" style="margin-left: 6px;">취소</button>
             </section>
           </div>
         </div>
