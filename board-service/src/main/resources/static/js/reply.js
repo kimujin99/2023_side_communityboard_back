@@ -33,7 +33,7 @@ async function checkReplyAndAjax() {
     //replyContent 내용 담기
     const content = replyContent.value;
     //content 유효성 검사
-    if(content == '' || content == null) {
+    if(content.trim() == '' || content == null) {
         replyErr.style.display = 'block';
         return;
     } else {
@@ -72,24 +72,6 @@ async function replyAjax() {
     } catch(err) {
         console.error(err);
     }
-
-//const postingCode = $("#postingCode").val();
-//const MappingUrl = "/boards/" + postingCode + "/reply"
-//const replyWriteDto = {
-//    postingCode: postingCode,
-//    userNickname: null,
-//    userProfile: null,
-//    replyContent: $("#replyContent").val(),
-//};
-//$.ajax({
-//    url: MappingUrl,
-//    type: "POST",
-//    data: replyWriteDto,
-//})
-//.done(function (fragment) {
-//     location.reload(true);
-//
-//});
 }
 
 // init
