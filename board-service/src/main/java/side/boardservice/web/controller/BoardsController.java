@@ -176,7 +176,11 @@ public class BoardsController {
     @PostMapping("/{postingCode}/reply")
     public ResponseEntity<Message> saveReply(@PathVariable("postingCode") Long postingCode,
                                              @RequestBody ReplyWriteDTO replyWriteDTO) {
-        log.info("replyWriteDTO.replyContent : {}", replyWriteDTO.getReplyContent());
+        //개행문자 치환
+        String replyContent = replyWriteDTO.getReplyContent();
+        replyContent = replyContent.replace("\r\n", "<br>").replace("\n", "<br>");
+        replyWriteDTO.setReplyContent(replyContent);
+
         //저장
         boardsService.saveReply(replyWriteDTO);
 

@@ -31,13 +31,15 @@ replyContent.addEventListener('keyup', () =>{
 //댓글 작성 유효성 검사 -> ajax 통신
 async function checkReplyAndAjax() {
     //replyContent 내용 담기
-    const content = replyContent.value;
+    let content = replyContent.value;
     //content 유효성 검사
     if(content.trim() == '' || content == null) {
         replyErr.style.display = 'block';
         return;
     } else {
         replyErr.style.display = 'none';
+
+        //ajax 통신
         await replyAjax();
     }
 }
