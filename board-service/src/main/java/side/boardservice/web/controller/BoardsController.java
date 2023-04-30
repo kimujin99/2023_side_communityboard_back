@@ -92,17 +92,42 @@ public class BoardsController {
     //글 상세 페이지로 이동
     @GetMapping("/{postingCode}")
     public String showPostingDetails(@PathVariable long postingCode, Model model){
-        //상세 페이지 가져오기
-        postingDetailsToModel(postingCode, model);
+        //글 상세 가져오기
+        BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
+        model.addAttribute("details", boardDetail);
+
+        //댓글 리스트 가져오기
+        List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
+        model.addAttribute("replyList", replyList);
+
+        //댓글 갯수 가져오기
+        int cnt = replyList.size();
+        model.addAttribute("cnt", cnt);
+
+        //댓글 작성용 모델
+        ReplyWriteDTO replyForm = new ReplyWriteDTO();
+        replyForm.setPostingCode(postingCode);
+        model.addAttribute("replyForm", replyForm);
 
         return "html/postingDetail";
     }
 
     //글 삭제
-    @GetMapping("/{postingCode}/delete")
-    public String deletePosting(@PathVariable long postingCode) {
+    @ResponseBody
+    @DeleteMapping("/{postingCode}")
+    public ResponseEntity<Message> deletePosting(@PathVariable long postingCode) {
+        //글 삭제
         boardsService.deletePosting(postingCode);
-        return "redirect:/boards";
+
+        //응답 객체
+        Message msg = new Message();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        //메시지 설정
+        msg.setStatus(StatusEnum.OK);
+        msg.setMessage("성공");
+
+        return new ResponseEntity<>(msg, headers, HttpStatus.OK);
     }
 
     //글 수정 페이지로 이동
@@ -155,8 +180,7 @@ public class BoardsController {
     //댓글 삭제
     @ResponseBody
     @DeleteMapping("/reply/{replyCode}")
-    public ResponseEntity<Message> deleteReply(@PathVariable("replyCode") Long replyCode,
-                                               Model model) {
+    public ResponseEntity<Message> deleteReply(@PathVariable("replyCode") Long replyCode) {
         //댓글 삭제
         boardsService.deleteReply(replyCode);
 
@@ -222,25 +246,5 @@ public class BoardsController {
         }
 
         return errs;
-    }
-
-    //글 상세 페이지로 가는 함수
-    public void postingDetailsToModel(Long postingCode, Model model) {
-        BoardDetailDTO boardDetail = boardsService.getBoardDetail(postingCode);
-        boardDetail.setPostingCode(postingCode);
-        model.addAttribute("details", boardDetail);
-
-        //댓글 리스트 가져오기
-        List<ReplyListDTO> replyList = boardsService.getReplyList(postingCode);
-        model.addAttribute("replyList", replyList);
-
-        //댓글 갯수 가져오기
-        int cnt = replyList.size();
-        model.addAttribute("cnt", cnt);
-
-        //댓글 작성용 모델
-        ReplyWriteDTO replyForm = new ReplyWriteDTO();
-        replyForm.setPostingCode(postingCode);
-        model.addAttribute("replyForm", replyForm);
     }
 }

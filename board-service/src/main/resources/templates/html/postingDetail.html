@@ -114,7 +114,9 @@
       <div class="flex justify-center">
         <button th:onclick="|location.href='@{/boards/{postingCode}/edit(postingCode=${details.postingCode})}'|"
                 type="button" class="nes-btn is-primary w-24 m-3">수정</button>
-        <button onclick="showModalAndSetDelLink('posting', '', '')" type="button" class="nes-btn is-error w-24 m-3">삭제</button>
+        <button id="delete-posting-btn"
+                th:attr="data-posting=${details.postingCode}"
+                type="button" class="nes-btn is-error w-24 m-3">삭제</button>
       </div>
 
       <!--   reply   -->
