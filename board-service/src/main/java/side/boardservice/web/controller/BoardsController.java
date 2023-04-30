@@ -3,10 +3,16 @@ package side.boardservice.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import side.boardservice.domain.Message;
+import side.boardservice.domain.StatusEnum;
 import side.boardservice.domain.board.dto.BoardDetailDTO;
 import side.boardservice.domain.board.dto.BoardListDTO;
 import side.boardservice.domain.board.dto.BoardWriteDTO;
@@ -15,6 +21,7 @@ import side.boardservice.domain.reply.dto.ReplyListDTO;
 import side.boardservice.domain.reply.dto.ReplyWriteDTO;
 import side.boardservice.web.service.BoardsService;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,8 +95,6 @@ public class BoardsController {
         //상세 페이지 가져오기
         postingDetailsToModel(postingCode, model);
 
-        //댓글 작성용 모델
-        model.addAttribute("replyForm", new ReplyWriteDTO());
         return "html/postingDetail";
     }
 
@@ -148,44 +153,42 @@ public class BoardsController {
     }
 
     //댓글 삭제
-    @GetMapping("/{postingCode}/{replyCode}/delete")
-    public String deleteReply(@PathVariable("replyCode") Long replyCode) {
+    @ResponseBody
+    @DeleteMapping("/reply/{replyCode}")
+    public ResponseEntity<Message> deleteReply(@PathVariable("replyCode") Long replyCode,
+                                               Model model) {
+        //댓글 삭제
         boardsService.deleteReply(replyCode);
-        return "redirect:/boards/{postingCode}";
+
+        //응답 객체
+        Message msg = new Message();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        //메시지 설정
+        msg.setStatus(StatusEnum.OK);
+        msg.setMessage("성공");
+
+        return new ResponseEntity<>(msg, headers, HttpStatus.OK);
     }
 
     //댓글 저장
+    @ResponseBody
     @PostMapping("/{postingCode}/reply")
-    public String saveReply(@PathVariable("postingCode") Long postingCode,
-                            @ModelAttribute("replyForm") ReplyWriteDTO replyWriteDTO,
-                            Model model) {
-        //redirection시 이전 스크롤위치 정보 확인
-        log.info("scrollPosition : {}", replyWriteDTO.getScrollPosition());
-
-        String replyContent = replyWriteDTO.getReplyContent();
-
-        //검증 오류 결과 보관
-        Map<String, String> errs = new ConcurrentHashMap<>();
-
-        //검증 로직
-        if (!StringUtils.hasText(replyContent)) {
-            errs.put("replyContent", "ERROR : 내용을 입력해주세요!");
-        }
-
-        //실패 로직
-        if(!errs.isEmpty()) {
-            log.info("error : {}", errs);
-            //에러 메시지
-            model.addAttribute("errs", errs);
-
-            postingDetailsToModel(postingCode, model);
-            return "html/postingDetail";
-        }
-
-        //성공 로직
-        replyWriteDTO.setPostingCode(postingCode);
+    public ResponseEntity<Message> saveReply(@PathVariable("postingCode") Long postingCode,
+                                             @RequestBody ReplyWriteDTO replyWriteDTO) {
+        log.info("replyWriteDTO.replyContent : {}", replyWriteDTO.getReplyContent());
+        //저장
         boardsService.saveReply(replyWriteDTO);
-        return "redirect:/boards/{postingCode}";
+
+        //응답 객체
+        Message msg = new Message();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        //메시지 설정
+        msg.setStatus(StatusEnum.OK);
+        msg.setMessage("성공");
+
+        return new ResponseEntity<>(msg, headers, HttpStatus.OK);
     }
 
 
@@ -230,5 +233,10 @@ public class BoardsController {
         //댓글 갯수 가져오기
         int cnt = replyList.size();
         model.addAttribute("cnt", cnt);
+
+        //댓글 작성용 모델
+        ReplyWriteDTO replyForm = new ReplyWriteDTO();
+        replyForm.setPostingCode(postingCode);
+        model.addAttribute("replyForm", replyForm);
     }
 }

@@ -13,5 +13,4 @@ public class ReplyWriteDTO {
     private String userNickname;
     private String userProfile;
     private String replyContent;
-    private Integer scrollPosition;
 }

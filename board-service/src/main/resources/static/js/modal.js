@@ -1,22 +1,54 @@
-const modal = document.querySelector("dialog")
+const replyDeleteBtnList = document.querySelectorAll('.delete-reply-btn');
+const modal = document.querySelector('dialog');
+const modalDeleteBtn = document.querySelector('#modal_del_btn');
+const modalCloseBtn = document.querySelector('#close_delete_modal');
 
-function showModalAndSetDelLink(flag, postingCode, replyCode) {
-    const modal_del_btn_P = document.getElementById("modal_del_btn_P")
-    const modal_del_btn_R = document.getElementById("modal_del_btn_R")
+const addDeleteBtnEvent = () => {
 
-    if(flag === "posting") {
-        modal_del_btn_P.style.display = "block";
-        modal_del_btn_R.style.display = "none";
-    } else if (flag === "reply") {
-        modal_del_btn_P.style.display = "none";
-        modal_del_btn_R.style.display = "block";
-        modal_del_btn_R.setAttribute("onclick", "location.href='/boards/"+postingCode+"/"+replyCode+"/delete'");
-    }
-
+    replyDeleteBtnList.forEach((btn) => btn.addEventListener('click', (e) => {
+    const id = e.currentTarget.dataset.reply;
     modal.showModal();
+    modalDeleteBtn.addEventListener('click', () => deleteReply(id));
+
+}))
+
 }
 
-//삭제 모달에서 취소 버튼 누르면 모달 닫힘
-document.getElementById("close_delete_modal").addEventListener("click", ()=>{
+async function deleteContent(url) {
+    try {
+
+        const {ok, ...response} = await fetch(url, {
+            method: 'DELETE'
+        });
+
+        //성공 시 새로고침
+        if(ok) {
+            location.reload(true);
+        }
+
+    } catch(err) {
+        console.error(err);
+    }
+}
+
+async function deletePosting(id) {
+    const url = `/boards/${id}`
+    await deleteContent(url)
+}
+
+async function deleteReply(id) {
+    const url = `/boards/reply/${id}`
+    await deleteContent(url)
+}
+
+modalCloseBtn.addEventListener('click', () => {
     modal.close();
-});
+})
+
+// init
+addDeleteBtnEvent();
+
+
+
+
+

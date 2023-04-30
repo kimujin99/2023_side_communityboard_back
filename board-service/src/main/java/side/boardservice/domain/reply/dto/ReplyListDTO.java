@@ -18,7 +18,7 @@ public class ReplyListDTO {
     private String insTime;
 
     public void timeSetting(ReplyListDTO replyListDTO, Timestamp insTime) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd hh:mm");
         replyListDTO.setInsTime(format.format(insTime));
     }
 }
