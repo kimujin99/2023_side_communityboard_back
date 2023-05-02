@@ -12,6 +12,7 @@
   <!--  script  -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script th:src = "@{/js/ckeditor/ckeditor.js}"></script>
+
   <style>
       html, body {
         height:100%;
@@ -51,16 +52,15 @@
     <p class="title">글쓰기</p>
 
     <!--  오류 메시지  -->
-    <div th:if="${errs?.containsKey('postingTitle')}">
-      <span class="nes-text is-error" th:text="${errs['postingTitle']}"></span>
+    <div id="titleErr" style="display:none;">
+      <span class="nes-text is-error">ERROR : 제목을 입력해주세요!</span>
     </div>
-    <div th:if="${errs?.containsKey('postingContent')}">
-      <span class="nes-text is-error" th:text="${errs['postingContent']}"></span>
+    <div id="contentErr" style="display:none;">
+      <span class="nes-text is-error">ERROR : 내용을 입력해주세요!</span>
     </div>
 
-    <form class="flex flex-col items-center h-full"
-          th:object="${dto}"
-          th:action method="post">
+    <section class="flex flex-col items-center h-full"
+          th:object="${dto}">
       <!--  Info  -->
       <div class="nes-table-responsive m-2">
         <table class="nes-table is-bordered is-centered" style="width:99%">
@@ -69,8 +69,8 @@
             <td class="w-2/12">카테고리</td>
             <td class="w-2/12">
               <div class="nes-select">
-                <select th:field="*{categoryCode}" style="padding-top: 0px; padding-bottom: 0px;">
-                  <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}" th:selected="${val.categoryCode} == ${selected}"></option>
+                <select th:field="*{categoryCode}" id="categoryCode" style="padding-top: 0px; padding-bottom: 0px;">
+                  <option th:each="val : ${categoryList}" th:value="${val.categoryCode}" th:text="${val.categoryName}"></option>
                 </select>
               </div>
             </td>
@@ -83,7 +83,7 @@
           <tr>
             <td class="w-2/12">제목</td>
             <td colspan="3">
-              <input type="text" th:field="*{postingTitle}" class="nes-input" style="padding-top: 0px; padding-bottom: 0px;">
+              <input type="text" th:field="*{postingTitle}" id="postingTitle" class="nes-input" style="padding-top: 0px; padding-bottom: 0px;">
             </td>
           </tr>
           </tbody>
@@ -91,11 +91,11 @@
       </div>
 
       <!--  CKEditor  -->
-      <textarea th:field="*{editor4}"></textarea>
+      <textarea th:field="*{editor4}" id="postingContent"></textarea>
 
       <!--  submit button  -->
-      <button type="submit" class="nes-btn is-primary w-24 m-3">저장</button>
-    </form>
+      <button id="addPostingBtn" type="button" class="nes-btn is-primary w-24 m-3">저장</button>
+    </section>
 
   </div>
 
@@ -143,6 +143,7 @@
       filebrowserUploadUrl:'/boards/ck/imageUpload.do'
     } );
 </script>
+<script type="text/javascript" th:src="@{/js/posting.js}"></script>
 
 </body>
 </html>

@@ -26,16 +26,16 @@ postingDeleteBtn.addEventListener('click', () => {
 async function deleteContent(url, flag) {
     try {
 
-        const {ok, ...response} = await fetch(url, {
+        const response = await fetch(url, {
             method: 'DELETE'
         });
 
         //성공 시 새로고침
-        if(ok) {
+        if(response.status === 200) {
             if(flag == 'P') {
                 window.location.href='/boards';
             } else if(flag == 'R') {
-                location.reload(true);
+                location.reload();
             }
         }
 

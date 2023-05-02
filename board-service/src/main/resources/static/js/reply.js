@@ -58,7 +58,7 @@ async function replyAjax() {
 
     try {
 
-        const {ok, ...response} = await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
@@ -67,8 +67,8 @@ async function replyAjax() {
         });
 
         //성공 시 새로고침
-        if(ok) {
-            location.reload(true);
+        if(response.status === 200) {
+            location.reload();
         }
 
     } catch(err) {

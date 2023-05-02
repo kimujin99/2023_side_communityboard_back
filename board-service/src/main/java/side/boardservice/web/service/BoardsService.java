@@ -51,14 +51,14 @@ public class BoardsService {
     }
 
     //게시물 저장하기(신규)
-    public void savePosting(Long categoryCode, String postingTitle, String postingContent) {
+    public Boards savePosting(Long categoryCode, String postingTitle, String postingContent) {
         Boards boards = new Boards(categoryCode, 1L, postingTitle, postingContent);
 
-        boardsRepository.save(boards);
+         return boardsRepository.save(boards);
     }
 
     //게시물 저장하기(수정)
-    public void savePosting(Long postingCode, Long categoryCode, String postingTitle, String postingContent) {
+    public Boards savePosting(Long postingCode, Long categoryCode, String postingTitle, String postingContent) {
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
         Boards boards = boardsRepository.findByPostingCode(postingCode);
@@ -70,7 +70,7 @@ public class BoardsService {
 
         log.info(" <---  서비스 진입!  --->");
 
-        boardsRepository.save(boards);
+        return boardsRepository.save(boards);
     }
 
     //게시물 삭제
@@ -87,11 +87,6 @@ public class BoardsService {
     public BoardDetailDTO getBoardDetail(Long postingCode) {
         Boards board = boardsRepository.findByPostingCode(postingCode);
 
-        //조회수 늘리기
-        Integer viewCount = board.getViewCount() + 1;
-        board.setViewCount(viewCount);
-        boardsRepository.save(board);
-
         //카테고리코드로 이름 가져오기
         String categoryName = getCategoryNameById(board.getCategoryCode());
         //유저코드로 닉네임 가져오기
@@ -99,6 +94,7 @@ public class BoardsService {
 
         BoardDetailDTO dto = BoardDetailDTO.builder()
                 .postingCode(postingCode)
+                .categoryCode(board.getCategoryCode())
                 .categoryName(categoryName)
                 .userNickname(userNickname)
                 .postingTitle(board.getPostingTitle())
@@ -110,6 +106,16 @@ public class BoardsService {
         dto.timeSetting(dto, board.getInsTime(), board.getUpdTime());
 
         return dto;
+    }
+
+    //게시물 조회수 늘리기
+    public void plusViewCount(Long postingCode) {
+        Boards board = boardsRepository.findByPostingCode(postingCode);
+
+        //조회수 늘리기
+        Integer viewCount = board.getViewCount() + 1;
+        board.setViewCount(viewCount);
+        boardsRepository.save(board);
     }
 
     //댓글 리스트 가져오기
