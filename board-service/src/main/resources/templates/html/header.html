@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--  meta  -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--  link  -->
+    <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+
+    <!--  script  -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<!--  navi-bar  -->
+<nav th:fragment="navi-bar" class="w-full h-24 bg-black fixed z-50 flex">
+    <div class="w-1/2 flex items-center m-6">
+        <i class="snes-jp-logo is-large"></i>
+        <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
+    </div>
+    <div class="w-1/2 flex items-center justify-end m-6">
+        <a class="nes-btn" th:href="@{/boards}">BOARDS</a>
+        <a class="nes-btn" th:href="@{/boards/emoji}">EMOJI</a>
+        <a class="nes-btn" th:href="@{/boards/my}">MY PAGE</a>
+        <button type="button" class="nes-btn is-error"
+                th:onclick="|location.href='@{/logout}'|"
+        >LOGOUT</button>
+        <a class="m-3" th:href="@{/boards/my}">
+            <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+        </a>
+    </div>
+</nav>
+
+</body>
+</html>
