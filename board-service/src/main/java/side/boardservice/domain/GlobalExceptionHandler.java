@@ -1,5 +1,6 @@
 package side.boardservice.domain;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,24 +11,25 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.nio.charset.Charset;
+import java.sql.SQLException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
-    public ResponseEntity<Message> handleInternalServerErr(HttpServerErrorException.InternalServerError e) {
+    @ExceptionHandler({SQLException.class, DataAccessException.class})
+    public ResponseEntity<Message> handleInternalServerErr(Exception e) {
 
         return createErrResponse(e, StatusEnum.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(HttpClientErrorException.BadRequest.class)
-    public ResponseEntity<Message> handleBadRequestErr(HttpClientErrorException.BadRequest e) {
+    public ResponseEntity<Message> handleBadRequestErr(Exception e) {
 
         return createErrResponse(e, StatusEnum.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpClientErrorException.NotFound.class)
-    public ResponseEntity<Message> handleNotFoundErr(HttpClientErrorException.NotFound e) {
+    public ResponseEntity<Message> handleNotFoundErr(Exception e) {
 
         return createErrResponse(e, StatusEnum.NOT_FOUND);
     }
