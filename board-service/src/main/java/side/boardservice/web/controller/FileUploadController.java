@@ -28,7 +28,6 @@ public class FileUploadController {
 
         log.info("컨 트 롤 러 진 입 ! ! ! !");
 
-        OutputStream out = null;
         PrintWriter printWriter = null;
 
         try {
@@ -64,10 +63,7 @@ public class FileUploadController {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                if(out != null) { out.close(); }
-                if(printWriter != null) { printWriter.close(); }
-            } catch(IOException e) { e.printStackTrace(); }
+            if(printWriter != null) { printWriter.close(); }
         }
     }
 
