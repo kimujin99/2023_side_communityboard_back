@@ -8,6 +8,8 @@
     <!--  link  -->
     <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
     <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/paging.css}" rel="stylesheet"/>
+
     <link rel="shortcut icon" href="/img/icon/favicon.ico">
 
     <!--  script  -->
@@ -100,19 +102,22 @@
         </div>
 
         <div>
-            <ul>
-                <li id="left-end-btn">⇤</li>
-                <li id="left-btn">◀</li>
-                <li class="page-btn"
-                    th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                    th:attr="data-pageNo=${page}">
+            <ul class="paging-container">
+                <li class="paging-btn">⇤</li>
+                <li class="paging-btn">◀</li>
+                <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
 
-                    <a th:if="${page != nowPage}" th:href="@{/boards(page = ${page - 1})}" th:text="${page}"></a>
-                    <span th:if="${page == nowPage}" th:text="${page}"></span>
+                    <a class="paging-btn nes-pointer"
+                       th:if="${page} != ${nowPage} and ${categoryCode} != null" th:href="@{/boards(page = ${page - 1}, category-code = ${categoryCode})}"
+                       th:text="${page}"></a>
+                    <a class="paging-btn paging-activated nes-pointer"
+                       th:if="${page} != ${nowPage} and ${categoryCode} == null" th:href="@{/boards(page = ${page - 1})}"
+                       th:text="${page}"></a>
+                    <span class="paging-btn paging-deactivated" th:if="${page == nowPage}" th:text="${page}"></span>
 
                 </li>
-                <li id="right-btn">◀</li>
-                <li id="right-end-btn">⇥</li>
+                <li class="paging-btn">▶</li>
+                <li class="paging-btn">⇥</li>
             </ul>
         </div>
     </div>

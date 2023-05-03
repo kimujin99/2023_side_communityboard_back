@@ -1,0 +1,25 @@
+ul,li, a, span {
+
+}
+
+.paging-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.paging-btn {
+    display: block;
+    border: 1px solid #000;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    box-sizing: border-box;
+    line-height: 25px;
+    margin: 5px;
+}
+
+.paging-deactivated {
+    background-color: #eee;
+}
