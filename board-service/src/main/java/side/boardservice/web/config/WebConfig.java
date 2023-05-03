@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${resource.handler}")
     private String resourceHandler;
 
-    @Value("${resource.location}")
+    @Value("${cloud.aws.s3.bucket.url}")
     private String resourceLocation;
 
     @Override
