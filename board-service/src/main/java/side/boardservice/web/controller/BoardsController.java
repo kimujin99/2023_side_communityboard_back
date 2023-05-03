@@ -54,10 +54,12 @@ public class BoardsController {
         //categoryCode 파라미터 값에 따라 분기
         if(categoryCode == null || categoryCode == 0) {
             boardList = boardsService.getBoardList();
-            boardListWithPaging = boardsListToPage(pageable, boardList);
+            boardListWithPaging = boardsListToPageAndSetModel(model, pageable, boardList);
         } else {
             boardList = boardsService.getBoardList(categoryCode);
-            boardListWithPaging = boardsListToPage(pageable, boardList);
+            boardListWithPaging = boardsListToPageAndSetModel(model, pageable, boardList);
+            //선택된 카테고리 코드도 같이 넘김
+            model.addAttribute("categoryCode", categoryCode);
         }
 
         //카테고리 리스트 가져오기
@@ -209,12 +211,20 @@ public class BoardsController {
         return new ResponseEntity<>(msg, headers, HttpStatus.OK);
     }
 
-    //List<Boards>를 Page<Boards>로 바꿔주는 함수
-    public Page<BoardListDTO> boardsListToPage(Pageable pageable, List<BoardListDTO> boardsList) {
+    //List<BoardListDTO>를 Page<BoardListDTO>로 바꿔주는 함수
+    public Page<BoardListDTO> boardsListToPageAndSetModel(Model model, Pageable pageable, List<BoardListDTO> boardsList) {
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), boardsList.size());
 
         final Page<BoardListDTO> page = new PageImpl<>(boardsList.subList(start, end), pageable, boardsList.size());
+
+        int nowPage = page.getPageable().getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, page.getTotalPages());
+
+        model.addAttribute("nowPage", nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return page;
     }

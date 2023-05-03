@@ -100,8 +100,20 @@
         </div>
 
         <div>
-            <button class="nes-btn is-primary"
-                    type="button">페이징</button>
+            <ul>
+                <li id="left-end-btn">⇤</li>
+                <li id="left-btn">◀</li>
+                <li class="page-btn"
+                    th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                    th:attr="data-pageNo=${page}">
+
+                    <a th:if="${page != nowPage}" th:href="@{/boards(page = ${page - 1})}" th:text="${page}"></a>
+                    <span th:if="${page == nowPage}" th:text="${page}"></span>
+
+                </li>
+                <li id="right-btn">◀</li>
+                <li id="right-end-btn">⇥</li>
+            </ul>
         </div>
     </div>
 
