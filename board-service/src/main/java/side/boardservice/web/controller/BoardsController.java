@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,22 +44,26 @@ public class BoardsController {
     //글목록(게시판 홈) 페이지로 이동
     @GetMapping
     public String getAllPostings(
+            @PageableDefault(page = 0, size = 15) Pageable pageable,
             @RequestParam(value = "category-code", required = false) Long categoryCode,
             Model model){
         //공통 리스트 객체 생성
         List<BoardListDTO> boardList =  null;
+        Page<BoardListDTO> boardListWithPaging =  null;
 
         //categoryCode 파라미터 값에 따라 분기
         if(categoryCode == null || categoryCode == 0) {
             boardList = boardsService.getBoardList();
+            boardListWithPaging = boardsListToPage(pageable, boardList);
         } else {
             boardList = boardsService.getBoardList(categoryCode);
+            boardListWithPaging = boardsListToPage(pageable, boardList);
         }
 
         //카테고리 리스트 가져오기
         addCategoryListToModel(model);
 
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("boardList", boardListWithPaging);
         return "html/boards";
     }
 
@@ -199,5 +207,15 @@ public class BoardsController {
         msg.setData(data);
 
         return new ResponseEntity<>(msg, headers, HttpStatus.OK);
+    }
+
+    //List<Boards>를 Page<Boards>로 바꿔주는 함수
+    public Page<BoardListDTO> boardsListToPage(Pageable pageable, List<BoardListDTO> boardsList) {
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), boardsList.size());
+
+        final Page<BoardListDTO> page = new PageImpl<>(boardsList.subList(start, end), pageable, boardsList.size());
+
+        return page;
     }
 }
