@@ -1,0 +1,59 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!--  meta  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--  link  -->
+  <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/paging.css}" rel="stylesheet"/>
+
+  <link rel="shortcut icon" href="/img/icon/favicon.ico">
+
+  <!--  script  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!--  title  -->
+  <title>게시판</title>
+</head>
+<body>
+
+<!--  main  -->
+<div class="flex flex-col items-center w-full h-full m-0 justify-between">
+  <!--  loginForm  -->
+  <section class="h-full flex items-center" style="min-height:900px">
+    <div class="flex flex-col nes-container is-centered items-center justify-center" style="height:700px; width:500px;">
+      <div class="flex justify-center items-center w-full h-2/6">
+        <img src="/img/logo/mascot.png" style="width:200px; height:200px">
+      </div>
+
+      <div class="w-full h-4/6 flex flex-col">
+        <p class="text-xl font-bold mb-7" style="text-shadow: 2px 2px 0px #bdbdbd">로그인</p>
+        <input type="text" class="nes-input mb-3" placeholder="이메일을 입력해주세요">
+
+        <!--  오류 메시지  -->
+        <div id="emailErr" style="display:none;">
+          <span class="nes-text is-error">ERROR : 이메일을 입력해주세요!</span>
+        </div>
+
+        <input type="password" class="nes-input mb-4" placeholder="비밀번호를 입력해주세요">
+
+        <!--  오류 메시지  -->
+        <div id="passwordErr" style="display:none;">
+          <span class="nes-text is-error">ERROR : 비밀번호를 입력해주세요!</span>
+        </div>
+
+        <button type="button" class="nes-btn is-primary mb-3" style="width:98%" th:text="로그인"></button>
+        <a th:href="@{/signup}" th:text="회원가입"></a>
+      </div>
+    </div>
+  </section>
+
+  <!--  footer  -->
+  <footer th:replace=" html/footer :: footer ">
+  </footer>
+</div>
+
+</body>
+</html>

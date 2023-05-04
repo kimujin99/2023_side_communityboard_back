@@ -1,0 +1,116 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!--  meta  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--  link  -->
+  <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+  <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+  <link th:href="@{/css/paging.css}" rel="stylesheet"/>
+
+  <link rel="shortcut icon" href="/img/icon/favicon.ico">
+
+  <!--  script  -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!--  title  -->
+  <title>게시판</title>
+</head>
+<body>
+
+<!--  main  -->
+<div class="flex flex-col items-center w-full h-full m-0 justify-between">
+  <!--  signupForm  -->
+  <section class="h-full flex items-center" style="min-height:1200px;">
+    <div class="flex flex-col nes-container items-center justify-center" style="height:1000px; width:900px;">
+      <div class="flex justify-center items-center w-full h-2/6">
+        <img src="/img/logo/mascot.png" style="width:200px; height:200px">
+      </div>
+
+      <div class="w-full h-4/6 flex flex-col">
+        <p class="text-center text-xl font-bold mb-7" style="text-shadow: 2px 2px 0px #bdbdbd">회원가입</p>
+
+        <div class="mb-4 flex justify-end">
+          <p class="bg-red-500 text-white font-bold">&nbsp;* 는 필수 입력사항입니다&nbsp;</p>
+        </div>
+
+        <!--  이메일 입력창  -->
+        <div class="flex flex-col mb-3">
+          <p class="font-bold text-red-500">* 이메일:</p>
+
+          <div class="flex items-center">
+            <input type="text" class="w-1/2 nes-input mr-3" placeholder="이메일을 입력해주세요">
+
+            <button type="button" class="nes-btn mr-3">확인</button>
+          </div>
+
+          <!--  오류 메시지  -->
+          <div id="emailErr" class="mt-2" style="display:;">
+            <span class="text-red-500">ERROR : 이메일을 입력해주세요!</span>
+          </div>
+        </div>
+
+        <!--  비밀번호 입력창  -->
+        <div class="flex flex-col mb-3">
+          <p class="font-bold text-red-500">* 비밀번호:</p>
+
+          <div class="flex items-center">
+            <input type="password" class="w-1/2 nes-input mr-3" placeholder="비밀번호를 입력해주세요">
+
+            <button type="button" class="nes-btn mr-3">확인</button>
+          </div>
+
+          <!--  오류 메시지  -->
+          <div id="passwordErr" class="mt-2" style="display:;">
+            <span class="text-red-500">ERROR : 비밀번호를 입력해주세요!</span>
+          </div>
+        </div>
+
+        <!--  회원 프로필 이미지 업로드창  -->
+        <div class="flex flex-col mb-3">
+          <p class="font-bold">프로필 이미지:</p>
+
+          <div class="flex items-center">
+            <input type="text" class="w-1/4 nes-input mr-3" disabled>
+            <label class="nes-btn mr-3">
+              <span>파일 찾기</span>
+              <input type="file">
+            </label>
+
+            <!--  오류 메시지  -->
+            <div id="profileImgErr" style="display:;">
+              <span class="text-red-500">ERROR : 파일 형식은 jpg, png만 가능합니다!</span>
+            </div>
+          </div>
+        </div>
+
+        <!--  닉네임 입력창  -->
+        <div class="flex flex-col mb-7">
+          <p class="font-bold text-red-500">* 닉네임:</p>
+
+          <div class="flex items-center">
+            <input type="text" class="w-1/4 nes-input mr-3" placeholder="닉네임을 입력해주세요">
+
+            <!--  오류 메시지  -->
+            <div id="nicknameErr" style="display:;">
+              <span class="text-red-500">ERROR : 닉네임을 입력해주세요!</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-center">
+          <button type="button" class="nes-btn is-primary mb-3" style="width:50%" th:text="회원가입"></button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!--  footer  -->
+  <footer th:replace=" html/footer :: footer ">
+  </footer>
+</div>
+
+</body>
+</html>
