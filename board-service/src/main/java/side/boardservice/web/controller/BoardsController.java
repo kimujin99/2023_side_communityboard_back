@@ -1,6 +1,5 @@
 package side.boardservice.web.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -15,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import side.boardservice.domain.Message;
 import side.boardservice.domain.StatusEnum;
@@ -30,8 +28,6 @@ import side.boardservice.web.service.BoardsService;
 
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Controller
@@ -213,18 +209,32 @@ public class BoardsController {
 
     //List<BoardListDTO>를 Page<BoardListDTO>로 바꿔주는 함수
     public Page<BoardListDTO> boardsListToPageAndSetModel(Model model, Pageable pageable, List<BoardListDTO> boardsList) {
+        //List를 Page로 변환
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), boardsList.size());
 
         final Page<BoardListDTO> page = new PageImpl<>(boardsList.subList(start, end), pageable, boardsList.size());
 
+        //페이징 정보
         int nowPage = page.getPageable().getPageNumber() + 1;
-        int startPage = Math.max(nowPage - 4, 1);
-        int endPage = Math.min(nowPage + 5, page.getTotalPages());
+
+        int pageGroup = (int)Math.ceil((double)nowPage / 5.0);
+
+        int startPage = ((pageGroup - 1) * 5) + 1;
+        int endPage = Math.min(pageGroup * 5, page.getTotalPages());
+
+        int totalPage = page.getTotalPages();
 
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("totalPage", totalPage);
+
+        log.info("pageGroup : {}", pageGroup);
+        log.info("nowPage : {}", nowPage);
+        log.info("startPage : {}", startPage);
+        log.info("endPage : {}", endPage);
+        log.info("totalPage : {}", totalPage);
 
         return page;
     }

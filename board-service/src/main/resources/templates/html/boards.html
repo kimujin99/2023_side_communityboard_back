@@ -103,10 +103,24 @@
 
         <div>
             <ul class="paging-container">
-                <li class="paging-btn">⇤</li>
-                <li class="paging-btn">◀</li>
-                <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                <!--   맨 앞 페이지로   -->
+                <li class="paging-btn">
+                    <a th:if="${categoryCode} != null"
+                       th:href="@{/boards(page = 0, category-code = ${categoryCode})}">⇤</a>
+                    <a th:if="${categoryCode} == null"
+                       th:href="@{/boards(page = 0)}">⇤</a>
+                </li>
 
+                <!--   앞 페이지로   -->
+                <li th:with="maxPage = ${T(java.lang.Math).max(nowPage -2 , 0)}" class="paging-btn">
+                    <a th:if="${categoryCode} != null"
+                       th:href="@{/boards(page = ${maxPage}, category-code = ${categoryCode})}">◀</a>
+                    <a th:if="${categoryCode} == null"
+                       th:href="@{/boards(page = ${maxPage})}">◀</a>
+                </li>
+
+                <!--   선택한 페이지로   -->
+                <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
                     <a class="paging-btn nes-pointer"
                        th:if="${page} != ${nowPage} and ${categoryCode} != null" th:href="@{/boards(page = ${page - 1}, category-code = ${categoryCode})}"
                        th:text="${page}"></a>
@@ -114,10 +128,23 @@
                        th:if="${page} != ${nowPage} and ${categoryCode} == null" th:href="@{/boards(page = ${page - 1})}"
                        th:text="${page}"></a>
                     <span class="paging-btn paging-deactivated" th:if="${page == nowPage}" th:text="${page}"></span>
-
                 </li>
-                <li class="paging-btn">▶</li>
-                <li class="paging-btn">⇥</li>
+
+                <!--   뒷 페이지로   -->
+                <li th:with="minPage = ${T(java.lang.Math).min(nowPage, totalPage - 1)}" class="paging-btn">
+                    <a th:if="${categoryCode} != null"
+                       th:href="@{/boards(page = ${minPage}, category-code = ${categoryCode})}">▶</a>
+                    <a th:if="${categoryCode} == null"
+                       th:href="@{/boards(page = ${minPage})}">▶</a>
+                </li>
+
+                <!--   맨 뒷 페이지로   -->
+                <li class="paging-btn">
+                    <a th:if="${categoryCode} != null"
+                       th:href="@{/boards(page = ${totalPage - 1}, category-code = ${categoryCode})}">⇥</a>
+                    <a th:if="${categoryCode} == null"
+                       th:href="@{/boards(page = ${totalPage - 1})}">⇥</a>
+                </li>
             </ul>
         </div>
     </div>
