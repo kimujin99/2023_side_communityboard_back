@@ -1,3 +1,5 @@
+const nowPath = window.location.pathname.replace('/boards/', '');
+
 const replyContent = document.querySelector('#replyContent');
 const replyList = document.querySelector('#replyList');
 const replyChild = document.querySelector('#replyList div');
@@ -46,13 +48,9 @@ async function checkReplyAndAjax() {
 
 //댓글 ajax 통신
 async function replyAjax() {
-    const postingCode = document.querySelector('#postingCode').value;
-    const url = '/boards/' + postingCode +'/reply';
+    const url = '/boards/' + nowPath +'/reply';
 
-    const replyWriteDTO = {
-        postingCode: postingCode,
-        userNickname: null,
-        userProfile: null,
+    const data = {
         replyContent: replyContent.value
     };
 
@@ -63,7 +61,7 @@ async function replyAjax() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(replyWriteDTO)
+            body: JSON.stringify(data)
         });
 
         //성공 시 새로고침

@@ -1,18 +1,20 @@
 package side.boardservice.domain.reply;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import side.boardservice.domain.post.Post;
+import side.boardservice.domain.user.User;
 
 import java.sql.Timestamp;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @DynamicInsert
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "replys_tb")
 public class Reply {
@@ -21,11 +23,13 @@ public class Reply {
     @Column(name = "reply_code")
     private Long replyCode;
 
-    @Column(name = "posting_code")
-    private Long postingCode;
+    @ManyToOne
+    @JoinColumn(name = "posting_code")
+    private Post post;
 
-    @Column(name = "user_code")
-    private Long userCode;
+    @ManyToOne
+    @JoinColumn(name = "user_code")
+    private User user;
 
     @Column(name = "emoji_code")
     private Long emojiCode;
@@ -36,4 +40,13 @@ public class Reply {
     @CreationTimestamp
     @Column(name = "ins_time")
     private Timestamp insTime;
+
+    @Builder
+    public Reply(Post post, User user, Long emojiCode, String replyContent) {
+        this.post = post;
+        this.user = user;
+        this.emojiCode = emojiCode;
+        this.replyContent = replyContent;
+    }
+
 }

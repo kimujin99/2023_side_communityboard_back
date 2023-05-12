@@ -110,13 +110,13 @@
           <p style="margin:6px;" th:text="|${cnt}개의 댓글|"></p>
         </div>
 
-        <!--  write reply  -->
-        <section class="fieldset_98" th:object="${replyForm}">
+        <!--  reply form  -->
+        <section class="fieldset_98">
 
           <!--  유저 정보 (닉네임, 프로필)  -->
           <div class="field-row_98">
-            <img th:src="@{/img/profile/kimujin99.JPG}" class="nes-avatar is-medium is-rounded" style="image-rendering: pixelated;">
-            <p th:text="|admin0|" style="margin-left:8px"></p>
+            <img th:src="${loginUser.userProfilePath}" class="nes-avatar is-medium is-rounded" style="image-rendering: pixelated;">
+            <p th:text="${loginUser.userNickname}" style="margin-left:8px"></p>
           </div>
 
           <!--  오류 메시지  -->
@@ -124,12 +124,9 @@
             <span class="nes-text is-error">ERROR : 내용을 입력해주세요!</span>
           </div>
 
-          <input type="hidden" th:field="*{postingCode}" id="postingCode">
-
           <!--  댓글 내용  -->
           <div class="field_row-stacked_98">
-            <textarea th:field="*{replyContent}" id="replyContent"
-                    maxlength="500" class="field-textarea_98" placeholder="댓글을 입력해주세요..."></textarea>
+            <textarea id="replyContent" maxlength="500" class="field-textarea_98" placeholder="댓글을 입력해주세요..."></textarea>
           </div>
 
           <!--  이모지 버튼, 내용 텍스트 길이 제한  -->
@@ -153,18 +150,22 @@
         <!--  reply list  -->
         <div id="replyList"
              class="fieldset_98 my-3 w-full h-fit">
-          <section  th:each="val : ${replyList}" class="replyList_98 my-3">
+          <section  th:each="val : ${details.replies}" class="replyList_98 my-3">
             <div class="field-row_98 justify-between">
               <div class="flex items-center">
-                <img class="nes-avatar is-medium is-rounded" th:src="|@{${val.userProfile}}|" style="image-rendering: pixelated;">
+                <!--  유저 프로필 이미지  -->
+                <img class="nes-avatar is-medium is-rounded" th:src="${val.userProfilePath}" style="image-rendering: pixelated;">
+                <!--  유저 닉네임  -->
                 <p th:text="${val.userNickname}" style="margin-left:8px"></p>
               </div>
 
+              <!--  댓글 등록시간 (년/월/일 시:분)  -->
               <div th:text="${val.insTime}">
               </div>
             </div>
 
             <div class="field_row-stacked_98">
+              <!--  댓글 내용  -->
               <div class="pre_98 h-fit" style="min-height:100px; text-align:left;" th:utext="${val.replyContent}">
               </div>
 

@@ -21,7 +21,7 @@ postingTitle.addEventListener('keyup', () =>{
 //게시글 작성 유효성 검사 -> ajax 통신
 async function checkPostingAndAjax() {
     //제목, 내용 담기
-    const content = CKEDITOR.instances.postingContent.getData();
+    const content = CKEDITOR.instances.editor4.getData();
     const title = postingTitle.value;
 
     //유효성 검사
@@ -60,12 +60,14 @@ async function editPosting() {
 
 //ajax 통신
 async function postingAjax(url, editPostingCode) {
-    const boardWriteDTO = {
+    const data = {
         postingCode: editPostingCode,
-        categoryCode: categoryCode.value,
-        userNickname: null,
+        category: {
+            categoryCode: categoryCode.value,
+            categoryName: null,
+        },
         postingTitle: postingTitle.value,
-        editor4: CKEDITOR.instances.postingContent.getData()
+        editor4: CKEDITOR.instances.editor4.getData()
     };
 
     try {
@@ -75,7 +77,7 @@ async function postingAjax(url, editPostingCode) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(boardWriteDTO)
+            body: JSON.stringify(data)
         });
 
         //성공

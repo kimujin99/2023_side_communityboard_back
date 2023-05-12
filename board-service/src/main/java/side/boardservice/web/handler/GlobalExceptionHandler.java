@@ -1,4 +1,4 @@
-package side.boardservice.domain;
+package side.boardservice.web.handler;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import side.boardservice.domain.Message;
+import side.boardservice.domain.StatusEnum;
 
 import java.nio.charset.Charset;
 import java.sql.SQLException;
