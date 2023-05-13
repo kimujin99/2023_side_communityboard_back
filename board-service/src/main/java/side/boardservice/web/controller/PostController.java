@@ -143,9 +143,6 @@ public class PostController {
         PostDto.DetailResponse details = postService.getPostDetail(postingCode);
         model.addAttribute("details", details);
 
-        log.info("details.categoryCode : {}", details.getCategoryCode());
-        log.info("details.postingContent : {}", details.getPostingContent());
-
         //카테고리 리스트 뿌리기
         addCategoryListToModel(model);
 
@@ -237,11 +234,11 @@ public class PostController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("totalPage", totalPage);
 
-        log.info("pageGroup : {}", pageGroup);
-        log.info("nowPage : {}", nowPage);
-        log.info("startPage : {}", startPage);
-        log.info("endPage : {}", endPage);
-        log.info("totalPage : {}", totalPage);
+//        log.info("pageGroup : {}", pageGroup);
+//        log.info("nowPage : {}", nowPage);
+//        log.info("startPage : {}", startPage);
+//        log.info("endPage : {}", endPage);
+//        log.info("totalPage : {}", totalPage);
 
         return page;
     }
