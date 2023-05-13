@@ -40,9 +40,14 @@
           <p class="font-bold text-red-500">* 이메일:</p>
 
           <div class="flex items-center">
-            <input type="text" class="w-1/2 nes-input mr-3" placeholder="이메일을 입력해주세요">
+            <input id="email" name="email" type="text" class="w-1/2 nes-input mr-3" placeholder="이메일을 입력해주세요">
 
-            <button type="button" class="nes-btn mr-3">확인</button>
+            <button id="check-email-btn" type="button" class="nes-btn mr-3">확인</button>
+
+            <!--  유효성 체크 성공  -->
+            <div id="emailChecked" style="display:none;">
+              <img th:src="@{/img/icon/checked.png}">
+            </div>
           </div>
 
           <!--  오류 메시지  -->
@@ -56,9 +61,12 @@
           <p class="font-bold text-red-500">* 비밀번호:</p>
 
           <div class="flex items-center">
-            <input type="password" class="w-1/2 nes-input mr-3" placeholder="비밀번호를 입력해주세요">
+            <input id="password" name="password" type="password" class="w-1/2 nes-input mr-3" placeholder="비밀번호를 입력해주세요">
 
-            <button type="button" class="nes-btn mr-3">확인</button>
+            <!--  유효성 체크 성공  -->
+            <div id="passwordChecked" style="display:none;">
+              <img th:src="@{/img/icon/checked.png}">
+            </div>
           </div>
 
           <!--  오류 메시지  -->
@@ -72,14 +80,14 @@
           <p class="font-bold">프로필 이미지:</p>
 
           <div class="flex items-center">
-            <input type="text" class="w-1/4 nes-input mr-3" disabled>
+            <input id="profileName" name="profileName" type="text" class="w-1/4 nes-input mr-3" disabled>
             <label class="nes-btn mr-3">
               <span>파일 찾기</span>
-              <input type="file">
+              <input id="profile" type="file" name="profile">
             </label>
 
             <!--  오류 메시지  -->
-            <div id="profileImgErr" style="display:none;">
+            <div id="profileErr" style="display:none;">
               <span class="text-red-500">ERROR : 파일 형식은 jpg, png만 가능합니다!</span>
             </div>
           </div>
@@ -90,7 +98,12 @@
           <p class="font-bold text-red-500">* 닉네임:</p>
 
           <div class="flex items-center">
-            <input type="text" class="w-1/4 nes-input mr-3" placeholder="닉네임을 입력해주세요">
+            <input id="nickname" name="nickname" type="text" class="w-1/4 nes-input mr-3" placeholder="닉네임을 입력해주세요">
+
+            <!--  유효성 체크 성공  -->
+            <div id="nicknameChecked" style="display:none;">
+              <img th:src="@{/img/icon/checked.png}">
+            </div>
 
             <!--  오류 메시지  -->
             <div id="nicknameErr" style="display:none;">
@@ -100,7 +113,7 @@
         </div>
 
         <div class="flex justify-center">
-          <button type="button" class="nes-btn is-primary mb-3" style="width:50%" th:text="회원가입"></button>
+          <button id="submit-signup-btn" type="button" class="nes-btn is-primary mb-3" style="width:50%" th:text="회원가입"></button>
         </div>
       </div>
     </div>
@@ -111,6 +124,8 @@
   <footer th:replace=" html/footer :: footer ">
   </footer>
 </div>
+
+<script type="text/javascript" th:src="@{/js/signup.js}"></script>
 
 </body>
 </html>
