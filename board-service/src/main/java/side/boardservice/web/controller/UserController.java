@@ -6,11 +6,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import side.boardservice.domain.Message;
 import side.boardservice.domain.StatusEnum;
 import side.boardservice.domain.user.UserDto;
@@ -25,8 +24,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
+//    @Autowired
+//    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping({"", "/", "/login"})
-    public String loginPage() {
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "exception", required = false) String exception,
+                            Model model) {
+
+        // 로그인 실패 메시지
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+
         return "html/login";
     }
 

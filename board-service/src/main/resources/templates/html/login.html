@@ -22,7 +22,8 @@
 <!--  main  -->
 <div class="flex flex-col items-center w-full h-full m-0 justify-between">
   <!--  loginForm  -->
-  <section class="h-full flex items-center" style="min-height:900px">
+  <form th:action="@{/login}" method="POST"
+        class="h-full flex items-center" style="min-height:900px">
     <div class="flex flex-col nes-container is-centered items-center justify-center" style="height:700px; width:500px;">
       <div class="flex justify-center items-center w-full h-2/6">
         <img src="/img/logo/mascot.png" style="width:200px; height:200px">
@@ -30,30 +31,38 @@
 
       <div class="w-full h-4/6 flex flex-col">
         <p class="text-xl font-bold mb-7" style="text-shadow: 2px 2px 0px #bdbdbd">로그인</p>
-        <input type="text" class="nes-input mb-3" placeholder="이메일을 입력해주세요">
 
-        <!--  오류 메시지  -->
+        <!--  입력 오류 메시지 (email)  -->
         <div id="emailErr" style="display:none;">
           <span class="nes-text is-error">ERROR : 이메일을 입력해주세요!</span>
         </div>
-
-        <input type="password" class="nes-input mb-4" placeholder="비밀번호를 입력해주세요">
-
-        <!--  오류 메시지  -->
+        <!--  입력 오류 메시지 (password)  -->
         <div id="passwordErr" style="display:none;">
           <span class="nes-text is-error">ERROR : 비밀번호를 입력해주세요!</span>
         </div>
+        <!--  검증 오류 메시지  -->
+        <div th:if="${error}" id="authErr">
+          <span class="nes-text is-error" th:text="${exception}"></span>
+        </div>
 
-        <button type="button" class="nes-btn is-primary mb-3" style="width:98%" th:text="로그인"></button>
+        <input id="email" name="email" type="text" class="nes-input my-3" autocomplete="off" placeholder="이메일을 입력해주세요" required>
+
+
+        <input id="password" name="password" type="password" class="nes-input mb-4" placeholder="비밀번호를 입력해주세요" required>
+
+
+        <button id="login-submit-btn" type="submit" class="nes-btn is-primary mb-3" style="width:98%" th:text="로그인"></button>
         <a th:href="@{/signup}" th:text="회원가입"></a>
       </div>
     </div>
-  </section>
+  </form>
 
   <!--  footer  -->
   <footer th:replace=" html/footer :: footer ">
   </footer>
 </div>
+
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
 
 </body>
 </html>
