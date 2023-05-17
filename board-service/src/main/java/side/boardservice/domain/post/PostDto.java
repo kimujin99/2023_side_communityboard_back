@@ -66,6 +66,7 @@ public class PostDto {
         private Long postingCode;
         private Long categoryCode;
         private String categoryName;
+        private Long userCode;
         private String userNickname;
         private String postingTitle;
         private String postingContent;
@@ -77,6 +78,7 @@ public class PostDto {
             this.postingCode = post.getPostingCode();
             this.categoryCode = post.getCategory().getCategoryCode();
             this.categoryName = post.getCategory().getCategoryName();
+            this.userCode = post.getUser().getUserCode();
             this.userNickname = post.getUser().getUserNickname();
             this.postingTitle = post.getPostingTitle();
             this.postingContent = post.getPostingContent();

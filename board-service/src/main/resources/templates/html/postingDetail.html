@@ -96,7 +96,7 @@
 
 
       <!--  button  -->
-      <div class="flex justify-center">
+      <div th:if="${details.userCode} == ${userInfo.userCode}" class="flex justify-center">
         <button th:onclick="|location.href='@{/boards/{postingCode}/edit(postingCode=${details.postingCode})}'|"
                 type="button" class="nes-btn is-primary w-24 m-3">수정</button>
         <button id="delete-posting-btn"
@@ -115,8 +115,8 @@
 
           <!--  유저 정보 (닉네임, 프로필)  -->
           <div class="field-row_98">
-            <img th:src="${loginUser.userProfilePath}" class="nes-avatar is-medium is-rounded" style="image-rendering: pixelated;">
-            <p th:text="${loginUser.userNickname}" style="margin-left:8px"></p>
+            <img th:src="${userInfo.userProfilePath}" class="nes-avatar is-medium is-rounded" style="image-rendering: pixelated;">
+            <p th:text="${userInfo.userNickname}" style="margin-left:8px"></p>
           </div>
 
           <!--  오류 메시지  -->
@@ -169,7 +169,7 @@
               <div class="pre_98 h-fit" style="min-height:100px; text-align:left;" th:utext="${val.replyContent}">
               </div>
 
-              <div class="flex justify-end">
+              <div th:if="${val.userCode} == ${userInfo.userCode}" class="flex justify-end">
                 <button th:attr="data-reply=${val.replyCode}"
                         type="button" class="delete-reply-btn button_98 nes-pointer justify-end">삭제</button>
               </div>

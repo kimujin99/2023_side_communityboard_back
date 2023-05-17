@@ -27,7 +27,7 @@
                 th:onclick="|location.href='@{/logout}'|"
         >LOGOUT</button>
         <a class="m-3" th:href="@{/post/my}">
-            <img class="nes-avatar is-rounded is-large" th:src="@{/img/profile/kimujin99.JPG}" style="image-rendering: pixelated;">
+            <img class="nes-avatar is-rounded is-large" th:src="${userInfo.userProfilePath}" style="image-rendering: pixelated;">
         </a>
     </div>
 </nav>

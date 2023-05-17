@@ -35,11 +35,10 @@ public class UserDto {
         private String userNickname;
         private String userProfilePath;
 
-        @Builder
-        public Response(Long userCode, String userNickname, String userProfilePath) {
-            this.userCode = userCode;
-            this.userNickname = userNickname;
-            this.userProfilePath = userProfilePath;
+        public Response(User user) {
+            this.userCode = user.getUserCode();
+            this.userNickname = user.getUserNickname();
+            this.userProfilePath = user.getUserProfilePath();
         }
     }
 }

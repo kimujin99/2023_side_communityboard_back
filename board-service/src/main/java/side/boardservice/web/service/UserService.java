@@ -8,6 +8,8 @@ import side.boardservice.domain.user.User;
 import side.boardservice.domain.user.UserDto;
 import side.boardservice.domain.user.UserRepository;
 
+import java.security.Principal;
+
 @Slf4j
 @Service
 public class UserService {
@@ -31,5 +33,9 @@ public class UserService {
         }
 
         return false;
+    }
+
+    public UserDto.Response getUserInfo(Principal principal) {
+        return new UserDto.Response(userRepository.findByUserEmailId(principal.getName()));
     }
 }

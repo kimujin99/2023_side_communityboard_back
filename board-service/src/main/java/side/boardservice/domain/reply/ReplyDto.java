@@ -32,6 +32,7 @@ public class ReplyDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Response {
         private Long replyCode;
+        private Long userCode;
         private String userNickname;
         private String userProfilePath;
         private String replyContent;
@@ -39,6 +40,7 @@ public class ReplyDto {
 
         public Response(Reply reply) {
             this.replyCode = reply.getReplyCode();
+            this.userCode = reply.getUser().getUserCode();
             this.userNickname = reply.getUser().getUserNickname();
             this.userProfilePath = reply.getUser().getUserProfilePath();
             this.replyContent = reply.getReplyContent();

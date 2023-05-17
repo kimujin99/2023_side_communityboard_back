@@ -63,7 +63,7 @@
             <td class="w-2/12">작성자</td>
             <td class="w-2/12">
               <p th:if="${details} != null" th:text="${details.userNickname}"></p>
-              <p th:if="${loginUser} != null" th:text="${loginUser.userNickname}"></p>
+              <p th:unless="${userInfo} != null" th:text="${userInfo.userNickname}"></p>
             </td>
           </tr>
           <tr>

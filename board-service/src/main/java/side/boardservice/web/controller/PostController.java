@@ -22,8 +22,10 @@ import side.boardservice.domain.category.Category;
 import side.boardservice.domain.reply.ReplyDto;
 import side.boardservice.domain.user.UserDto;
 import side.boardservice.web.service.PostService;
+import side.boardservice.web.service.UserService;
 
 import java.nio.charset.Charset;
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -34,11 +36,15 @@ public class PostController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    UserService userService;
+
     //글목록(게시판 홈) 페이지로 이동
     @GetMapping
     public String getAllPosts(
             @PageableDefault(page = 0, size = 15) Pageable pageable,
             @RequestParam(value = "category-code", required = false) Long categoryCode,
+            Principal principal,
             Model model){
         //공통 리스트 객체 생성
         List<PostDto.ListResponse> postList =  null;
@@ -58,21 +64,19 @@ public class PostController {
         //카테고리 리스트 가져오기
         addCategoryListToModel(model);
 
+        //인증된 사용자 정보 가져오기
+        addPrincipalToModel(model, principal);
+
         model.addAttribute("postList", postListWithPaging);
         return "html/boards";
     }
 
     //글 작성 페이지로 이동
     @GetMapping("/write")
-    public String writePosting(Model model){
-        //로그인된 사용자 정보 넘기기
-        // TODO: 매개변수로 인증된 사용자 정보 주입 받아 사용하기
-        UserDto.Response loginUser = UserDto.Response.builder()
-                .userCode(1L)
-                .userNickname("admin0")
-                .userProfilePath("/img/profile/kimujin99.JPG")
-                .build();
-        model.addAttribute("loginUser", loginUser);
+    public String writePosting(Principal principal, Model model){
+
+        //인증된 사용자 정보 가져오기
+        addPrincipalToModel(model, principal);
 
         //카테고리 리스트 가져오기
         addCategoryListToModel(model);
@@ -83,13 +87,13 @@ public class PostController {
     //글 저장 - ajax
     @ResponseBody
     @PostMapping("/write")
-    public ResponseEntity<Message> savePost(@RequestBody PostDto.Request dto){
+    public ResponseEntity<Message> savePost(@RequestBody PostDto.Request dto, Principal principal){
 
-        // TODO: 매개변수로 인증된 사용자 정보 주입 받아 사용하기
-        String userNickname = "admin0";
+        // 인증된 사용자 정보 넘기기
+        String userEmailID = principal.getName();
 
         //글 저장
-        Post savedPost = postService.savePost(userNickname, dto);
+        Post savedPost = postService.savePost(userEmailID, dto);
 
         return ajaxResponseOk(savedPost);
     }
@@ -108,6 +112,7 @@ public class PostController {
     @GetMapping("/{postingCode}")
     public String getPostDetail(@PathVariable long postingCode,
 //                                     @RequestParam(name = "view-counting", required = false) Boolean viewCounting,
+                                Principal principal,
                                 Model model){
 //        //리로드 시 조회수 카운팅 false
 //        if(BooleanUtils.isTrue( viewCounting )) {
@@ -122,26 +127,21 @@ public class PostController {
         int cnt = postDetail.getReplies().size();
         model.addAttribute("cnt", cnt);
 
-        //로그인된 사용자 정보 넘기기
-        // TODO: 매개변수로 인증된 사용자 정보 주입 받아 사용하기
-        UserDto.Response loginUser = UserDto.Response.builder()
-                .userCode(1L)
-                .userNickname("admin0")
-                .userProfilePath("/img/profile/kimujin99.JPG")
-                .build();
-        model.addAttribute("loginUser", loginUser);
-
-        // TODO: 게시글 작성자가 본인인지 확인 - return type:boolean
+        //인증된 사용자 정보 가져오기
+        addPrincipalToModel(model, principal);
 
         return "html/postingDetail";
     }
 
     //글 수정 페이지로 이동
     @GetMapping("/{postingCode}/edit")
-    public String editForm(@PathVariable long postingCode, Model model) {
+    public String editForm(@PathVariable long postingCode, Principal principal, Model model) {
         //디테일 받아오기
         PostDto.DetailResponse details = postService.getPostDetail(postingCode);
         model.addAttribute("details", details);
+
+        //인증된 사용자 정보 가져오기
+        addPrincipalToModel(model, principal);
 
         //카테고리 리스트 뿌리기
         addCategoryListToModel(model);
@@ -174,17 +174,18 @@ public class PostController {
     @ResponseBody
     @PostMapping("/{postingCode}/reply")
     public ResponseEntity<Message> saveReply(@PathVariable("postingCode") Long postingCode,
-                                             @RequestBody ReplyDto.Request dto) {
+                                             @RequestBody ReplyDto.Request dto,
+                                             Principal principal) {
         //개행문자 치환
         String replyContent = dto.getReplyContent();
         replyContent = replyContent.replace("\r\n", "<br>").replace("\n", "<br>");
         dto.setReplyContent(replyContent);
 
-        // TODO: 매개변수로 인증된 사용자 정보 주입 받아 사용하기
-        String userNickname = "admin0";
+        // 인증된 사용자 정보 넘기기
+        String userEmailID = principal.getName();
 
         //저장
-        postService.saveReply(postingCode, userNickname, dto);
+        postService.saveReply(postingCode, userEmailID, dto);
 
         return ajaxResponseOk(null);
     }
@@ -194,6 +195,12 @@ public class PostController {
     public void addCategoryListToModel(Model model) {
         List<Category> categoryList = postService.getcategoryList();
         model.addAttribute("categoryList", categoryList);
+    }
+
+    //인증된 사용자 정보 불러와서 Model에 넘기는 함수
+    public void addPrincipalToModel(Model model, Principal principal) {
+        UserDto.Response userInfo = userService.getUserInfo(principal);
+        model.addAttribute("userInfo", userInfo);
     }
 
     //JSON으로 성공 메시지 뿌려주는 함수

@@ -67,9 +67,9 @@ public class PostService {
 //    }
 
     //게시물 저장하기 (신규)
-    public Post savePost(String userNickname, PostDto.Request dto) {
+    public Post savePost(String userEmailID, PostDto.Request dto) {
 
-        User user = userRepository.findByUserNickname(userNickname);
+        User user = userRepository.findByUserEmailId(userEmailID);
         dto.setUser(user);
 
         Post post = dto.toEntity();
@@ -97,8 +97,8 @@ public class PostService {
     }
 
     //댓글 저장
-    public void saveReply(Long postingCode, String userNickname, ReplyDto.Request dto) {
-        User user = userRepository.findByUserNickname(userNickname);
+    public void saveReply(Long postingCode, String userEmailID, ReplyDto.Request dto) {
+        User user = userRepository.findByUserEmailId(userEmailID);
         Post post = postRepository.findById(postingCode).get();
 
         dto.setUser(user);
