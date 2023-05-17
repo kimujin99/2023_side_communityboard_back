@@ -41,7 +41,6 @@ function validatePassword() {
 loginSubmitBtn.addEventListener('click', () => {
     emailErr.style.display = 'none';
     passwordErr.style.display = 'none';
-    authErr.style.display = 'none';
 })
 
 emailInput.addEventListener('invalid', (e) => {

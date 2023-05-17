@@ -23,9 +23,10 @@
         <a class="nes-btn" th:href="@{/boards}">BOARDS</a>
         <a class="nes-btn" th:href="@{/boards/emoji}">EMOJI</a>
         <a class="nes-btn" th:href="@{/boards/my}">MY PAGE</a>
-        <button type="button" class="nes-btn is-error"
-                th:onclick="|location.href='@{/logout}'|"
-        >LOGOUT</button>
+        <form th:action="@{/logout}" method="POST">
+            <button type="submit" class="nes-btn is-error">LOGOUT</button>
+        </form>
+
         <a class="m-3" th:href="@{/post/my}">
             <img class="nes-avatar is-rounded is-large" th:src="${userInfo.userProfilePath}" style="image-rendering: pixelated;">
         </a>
