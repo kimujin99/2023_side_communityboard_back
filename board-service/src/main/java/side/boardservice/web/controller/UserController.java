@@ -53,6 +53,14 @@ public class UserController {
         return ajaxResponseOk(null);
     }
 
+    @ResponseBody
+    @PostMapping("/email-check.do")
+    public ResponseEntity<Message> emailDuplicateCheck(@RequestBody UserDto.Request dto) {
+        Boolean emailedDuplicateChecking = userService.emailDuplicateCheck(dto);
+
+        return ajaxResponseOk(emailedDuplicateChecking);
+    }
+
     //JSON으로 성공 메시지 뿌려주는 함수
     public ResponseEntity<Message> ajaxResponseOk(Object data) {
         //응답 객체

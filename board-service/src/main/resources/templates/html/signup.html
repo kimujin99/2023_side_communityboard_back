@@ -6,8 +6,9 @@
 
   <!--  link  -->
   <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
-  <link th:href="@{/css/styles.css}" rel="stylesheet"/>
-  <link th:href="@{/css/paging.css}" rel="stylesheet"/>
+  <link th:href="@{/css/modal.css?after}" rel="stylesheet"/>
+  <link th:href="@{/css/styles.css?after}" rel="stylesheet"/>
+  <link th:href="@{/css/paging.css?after}" rel="stylesheet"/>
 
   <link rel="shortcut icon" href="/img/icon/favicon.ico">
 
@@ -42,7 +43,7 @@
           <div class="flex items-center">
             <input id="email" name="email" type="text" class="w-1/2 nes-input mr-3" placeholder="이메일을 입력해주세요">
 
-            <button id="check-email-btn" type="button" class="nes-btn mr-3">확인</button>
+            <button id="email-duplicate-check-btn" type="button" class="nes-btn mr-3">중복체크</button>
 
             <!--  유효성 체크 성공  -->
             <div id="emailChecked" style="display:none;">
@@ -117,6 +118,26 @@
         </div>
       </div>
     </div>
+
+    <!--   dialog modal   -->
+    <dialog style="background-color:transparent;">
+      <div class="window_98">
+        <div class="title_bar_98">
+          <div class="title-bar-text_98">
+            ! Warning !
+          </div>
+        </div>
+        <div class="window-body_98">
+          <div class="flex justify-center">
+            <p id="email-check-modal-msg" class="window-body-text_98"></p>
+            <img th:src="@{/img/icon/sad_file.png}" style="height:45px; width:45px; margin-left:6px;">
+          </div>
+          <section class="field-row_98" style="justify-content: flex-end">
+            <button id="close_email_checking_modal" class="button_98 nes-pointer" style="margin-left: 6px;">취소</button>
+          </section>
+        </div>
+      </div>
+    </dialog>
 
   </section>
 

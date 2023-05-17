@@ -1,4 +1,8 @@
-const checkEmailBtn = document.querySelector('#check-email-btn');
+//modal
+const modal = document.querySelector('dialog');
+const emailDuplicateCheckBtn = document.querySelector('#email-duplicate-check-btn');
+const closeModalBtn = document.querySelector('#close_email_checking_modal');
+const modalMsg = document.querySelector('#email-check-modal-msg');
 
 //input
 const emailInput = document.querySelector('#email');
@@ -25,7 +29,9 @@ const nicknameChecked = document.querySelector('#nicknameChecked');
 const submitSignupBtn = document.querySelector('#submit-signup-btn');
 
 //체킹 변수
-let emailChecking = false;
+let emailValidChecking = false;
+let emailDuplicateChecking = false;
+
 let passwordChecking = false;
 let nicknameChecking = false;
 let profileChecking = true;
@@ -36,6 +42,13 @@ emailInput.addEventListener('keyup', () => {
     emailInput.value = email.trim();
 })
 
+//email 변경 감지
+emailInput.addEventListener('change', () => {
+    emailValidChecking = false;
+    emailDuplicateChecking = false;
+    emailChecked.style.display = 'none';
+})
+
 //email 유효성 체크
 function validateEmail() {
     const email = emailInput.value;
@@ -44,24 +57,43 @@ function validateEmail() {
     emailChecked.style.display = 'none';
 
     if(email.trim() == '' || email == null) {
-        emailChecking = false;
+        emailValidChecking = false;
         emailErrSpan.innerText = 'ERROR : 이메일을 입력해주세요!';
         emailErr.style.display = 'block';
     } else if(!emailRegex.test(email)) {
-        emailChecking = false;
+        emailValidChecking = false;
         emailErrSpan.innerText = 'ERROR : 이메일 형식에 맞게 입력해주세요!';
         emailErr.style.display = 'block';
     } else {
-        emailChecked.style.display = 'block';
         emailErr.style.display = 'none';
-        emailChecking = true;
+        emailValidChecking = true;
     }
 }
+
+//email 중복체크
+emailDuplicateCheckBtn.addEventListener('click', ()=>{
+    validateEmail();
+    if(emailValidChecking) {
+        //ajax
+        emailDuplicateCheckAjax();
+    }
+})
+
+//Modal 닫기
+closeModalBtn.addEventListener('click', ()=>{
+    modal.close();
+})
 
 //password 공백 금지
 passwordInput.addEventListener('keyup', () => {
     const password = passwordInput.value;
     passwordInput.value = password.trim();
+})
+
+//password 변경 감지
+passwordInput.addEventListener('change', () => {
+    passwordChecking = false;
+    passwordChecked.style.display = 'none';
 })
 
 //password 유효성 체크
@@ -95,6 +127,12 @@ function validatePassword() {
 nicknameInput.addEventListener('keyup', () => {
     const nickname = nicknameInput.value;
     nicknameInput.value = nickname.trim();
+})
+
+//nickname 변경 감지
+nicknameInput.addEventListener('change', () => {
+    nicknameChecking = false;
+    nicknameChecked.style.display = 'none';
 })
 
 //nickname 유효성 체크
@@ -155,17 +193,24 @@ function validateProfile() {
 }
 
 profileInput.addEventListener('change', validateProfile);
-checkEmailBtn.addEventListener('click', validateEmail);
 
 submitSignupBtn.addEventListener('click', () =>{
-    validateEmail();
-    validatePassword();
-    validateNickname();
 
-    //ajax 통신
-    if(emailChecking && passwordChecking && nicknameChecking && profileChecking) {
-        signupAjax();
+    if(!emailDuplicateChecking) {
+        modalMsg.innerText = '이메일 중복체크를 진행해주세요!'
+        modal.showModal();
+    } else {
+
+        validatePassword();
+        validateNickname();
+
+        //ajax 통신
+        if(passwordChecking && nicknameChecking && profileChecking) {
+            signupAjax();
+        }
+
     }
+
 })
 
 //ajax 통신
@@ -191,6 +236,44 @@ async function signupAjax() {
         //성공 시 새로고침
         if(response.status === 200) {
             window.location.href='/login';
+        }
+
+    } catch(err) {
+        console.error(err);
+    }
+}
+
+//ajax 통신
+async function emailDuplicateCheckAjax() {
+    const url = '/email-check.do';
+    const data = {
+        userEmailId: emailInput.value
+    };
+
+    try {
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+
+        //성공 시 새로고침
+        if(response.status === 200) {
+            const data = await response.json(); // response.json()으로 Promise 객체 추출
+            emailDuplicateChecking = data.data; // data에서 boolean 결과 추출
+
+            console.log("emailDuplicateChecking = " + emailDuplicateChecking);
+
+            //결과 분기
+            if(emailDuplicateChecking) {
+                emailChecked.style.display = 'block';
+            } else {
+                modalMsg.innerText = '이미 사용중인 이메일입니다!'
+                modal.showModal();
+            }
         }
 
     } catch(err) {
