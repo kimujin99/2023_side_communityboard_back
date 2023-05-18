@@ -1,3 +1,7 @@
+//csrf token
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+
 //modal
 const modal = document.querySelector('dialog');
 const emailDuplicateCheckBtn = document.querySelector('#email-duplicate-check-btn');
@@ -213,6 +217,12 @@ submitSignupBtn.addEventListener('click', () =>{
 
 })
 
+//headers 에 csrfToken 설정
+const headers = {
+    "Content-Type": "application/json",
+};
+headers[csrfHeader] = csrfToken;
+
 //ajax 통신
 async function signupAjax() {
     const url = '/signup';
@@ -227,9 +237,7 @@ async function signupAjax() {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: headers,
             body: JSON.stringify(data)
         });
 
@@ -254,9 +262,7 @@ async function emailDuplicateCheckAjax() {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: headers,
             body: JSON.stringify(data)
         });
 

@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!--  csrf token  -->
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
   <!--  link  -->
   <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet"/>
   <link th:href="@{/css/modal.css?after}" rel="stylesheet"/>

@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!--  csrf token  -->
+  <meta name="_csrf" th:content="${_csrf.token}">
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
   <!--  link  -->
   <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
   <link th:href="@{/css/styles.css}" rel="stylesheet"/>
@@ -63,7 +67,7 @@
             <td class="w-2/12">작성자</td>
             <td class="w-2/12">
               <p th:if="${details} != null" th:text="${details.userNickname}"></p>
-              <p th:unless="${userInfo} != null" th:text="${userInfo.userNickname}"></p>
+              <p th:unless="${details} != null" th:text="${userInfo.userNickname}"></p>
             </td>
           </tr>
           <tr>

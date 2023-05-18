@@ -1,3 +1,7 @@
+//csrf token
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+
 const replyDeleteBtnList = document.querySelectorAll('.delete-reply-btn');
 const modal = document.querySelector('dialog');
 const modalDeleteBtn = document.querySelector('#modal_del_btn');
@@ -13,21 +17,32 @@ const addDeleteBtnEvent = () => {
 
 }))
 
-postingDeleteBtn.addEventListener('click', () => {
+if(postingDeleteBtn != null) {
 
-    const id = postingDeleteBtn.dataset.posting;
-    modal.showModal();
-    modalDeleteBtn.addEventListener('click', () => deletePosting(id));
+    postingDeleteBtn.addEventListener('click', () => {
 
-})
+        const id = postingDeleteBtn.dataset.posting;
+        modal.showModal();
+        modalDeleteBtn.addEventListener('click', () => deletePosting(id));
+
+    })
+}
+
 
 }
+
+//headers 에 csrfToken 설정
+const headers = {
+    "Content-Type": "application/json",
+};
+headers[csrfHeader] = csrfToken;
 
 async function deleteContent(url, flag) {
     try {
 
         const response = await fetch(url, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: headers,
         });
 
         //성공 시 새로고침
