@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +23,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-//    @Autowired
-//    BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    //로그인 페이지로 이동
     @GetMapping({"", "/", "/login"})
     public String loginPage(@RequestParam(value = "error", required = false) String error,
                             @RequestParam(value = "exception", required = false) String exception,
@@ -39,6 +36,7 @@ public class UserController {
         return "html/login";
     }
 
+    //회원가입 페이지로 이동
     @GetMapping("/signup")
     public String signupPage() {
         return "html/signup";
@@ -50,19 +48,20 @@ public class UserController {
 
         userService.saveUser(dto);
 
-        return ajaxResponseOk(null);
+        return fetchResponseOk(null);
     }
 
+    //회원가입 - fetch API
     @ResponseBody
     @PostMapping("/email-check.do")
     public ResponseEntity<Message> emailDuplicateCheck(@RequestBody UserDto.Request dto) {
         Boolean emailedDuplicateChecking = userService.emailDuplicateCheck(dto);
 
-        return ajaxResponseOk(emailedDuplicateChecking);
+        return fetchResponseOk(emailedDuplicateChecking);
     }
 
     //JSON으로 성공 메시지 뿌려주는 함수
-    public ResponseEntity<Message> ajaxResponseOk(Object data) {
+    public ResponseEntity<Message> fetchResponseOk(Object data) {
         //응답 객체
         Message msg = new Message();
         HttpHeaders headers = new HttpHeaders();

@@ -1,7 +1,3 @@
-//csrf token
-const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-
 //nowPath
 const nowPath = window.location.pathname.replace('/boards/', '');
 
@@ -23,8 +19,8 @@ postingTitle.addEventListener('keyup', () =>{
     }
 })
 
-//게시글 작성 유효성 검사 -> ajax 통신
-async function checkPostingAndAjax() {
+//게시글 작성 유효성 검사 -> fetch API
+async function checkPostingAndFetch() {
     //제목, 내용 담기
     const content = CKEDITOR.instances.editor4.getData();
     const title = postingTitle.value;
@@ -41,7 +37,7 @@ async function checkPostingAndAjax() {
     } else {
         contentErr.style.display = 'none';
 
-        //ajax 통신
+        //fetch API
         if(nowPath === 'write') {
             writePosting();
         } else {
@@ -53,24 +49,18 @@ async function checkPostingAndAjax() {
 //글 작성
 async function writePosting() {
     const url = `/boards/write`;
-    await postingAjax(url, null);
+    await savePosting(url, null);
 }
 
 //글 수정
 async function editPosting() {
     const postingCode = nowPath.replace('/edit', '');
     const url = `/boards/${postingCode}/edit`;
-    await postingAjax(url, postingCode);
+    await savePosting(url, postingCode);
 }
 
-//headers 에 csrfToken 설정
-const headers = {
-    "Content-Type": "application/json",
-};
-headers[csrfHeader] = csrfToken;
-
-//ajax 통신
-async function postingAjax(url, editPostingCode) {
+//fetch API
+async function savePosting(url, editPostingCode) {
     const data = {
         postingCode: editPostingCode,
         category: {
@@ -85,7 +75,7 @@ async function postingAjax(url, editPostingCode) {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: headers,
+            headers: jsonHeaders,
             body: JSON.stringify(data)
         });
 
@@ -102,4 +92,4 @@ async function postingAjax(url, editPostingCode) {
 }
 
 // init
-addPostingBtn.addEventListener('click', checkPostingAndAjax );
+addPostingBtn.addEventListener('click', checkPostingAndFetch );

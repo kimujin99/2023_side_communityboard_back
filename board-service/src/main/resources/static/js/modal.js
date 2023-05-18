@@ -1,7 +1,3 @@
-//csrf token
-const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-
 const replyDeleteBtnList = document.querySelectorAll('.delete-reply-btn');
 const modal = document.querySelector('dialog');
 const modalDeleteBtn = document.querySelector('#modal_del_btn');
@@ -31,18 +27,13 @@ if(postingDeleteBtn != null) {
 
 }
 
-//headers 에 csrfToken 설정
-const headers = {
-    "Content-Type": "application/json",
-};
-headers[csrfHeader] = csrfToken;
-
+//fetch API
 async function deleteContent(url, flag) {
     try {
 
         const response = await fetch(url, {
             method: 'DELETE',
-            headers: headers,
+            headers: jsonHeaders,
         });
 
         //성공 시 새로고침

@@ -1,7 +1,3 @@
-//csrf token
-const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-
 //modal
 const modal = document.querySelector('dialog');
 const emailDuplicateCheckBtn = document.querySelector('#email-duplicate-check-btn');
@@ -78,8 +74,8 @@ function validateEmail() {
 emailDuplicateCheckBtn.addEventListener('click', ()=>{
     validateEmail();
     if(emailValidChecking) {
-        //ajax
-        emailDuplicateCheckAjax();
+        //fetch
+        emailDuplicateCheck();
     }
 })
 
@@ -208,23 +204,17 @@ submitSignupBtn.addEventListener('click', () =>{
         validatePassword();
         validateNickname();
 
-        //ajax 통신
+        //fetch
         if(passwordChecking && nicknameChecking && profileChecking) {
-            signupAjax();
+            signup();
         }
 
     }
 
 })
 
-//headers 에 csrfToken 설정
-const headers = {
-    "Content-Type": "application/json",
-};
-headers[csrfHeader] = csrfToken;
-
-//ajax 통신
-async function signupAjax() {
+//fetch API
+async function signup() {
     const url = '/signup';
     const data = {
         userEmailId: emailInput.value,
@@ -237,7 +227,7 @@ async function signupAjax() {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: headers,
+            headers: jsonHeaders,
             body: JSON.stringify(data)
         });
 
@@ -251,8 +241,8 @@ async function signupAjax() {
     }
 }
 
-//ajax 통신
-async function emailDuplicateCheckAjax() {
+//fetch API
+async function emailDuplicateCheck() {
     const url = '/email-check.do';
     const data = {
         userEmailId: emailInput.value
@@ -262,7 +252,7 @@ async function emailDuplicateCheckAjax() {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: headers,
+            headers: jsonHeaders,
             body: JSON.stringify(data)
         });
 
@@ -286,3 +276,5 @@ async function emailDuplicateCheckAjax() {
         console.error(err);
     }
 }
+
+//fetch API

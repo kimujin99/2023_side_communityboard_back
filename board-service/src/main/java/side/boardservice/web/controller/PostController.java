@@ -84,7 +84,7 @@ public class PostController {
         return "html/postingForm";
     }
 
-    //글 저장 - ajax
+    //글 저장 - fetch API
     @ResponseBody
     @PostMapping("/write")
     public ResponseEntity<Message> savePost(@RequestBody PostDto.Request dto, Principal principal){
@@ -95,17 +95,17 @@ public class PostController {
         //글 저장
         Post savedPost = postService.savePost(userEmailID, dto);
 
-        return ajaxResponseOk(savedPost);
+        return fetchResponseOk(savedPost);
     }
 
-    //글 삭제 - ajax
+    //글 삭제 - fetch API
     @ResponseBody
     @DeleteMapping("/{postingCode}")
     public ResponseEntity<Message> deletePosting(@PathVariable long postingCode) {
         //글 삭제
         postService.deletePost(postingCode);
 
-        return ajaxResponseOk(null);
+        return fetchResponseOk(null);
     }
 
     //글 상세 페이지로 이동
@@ -149,7 +149,7 @@ public class PostController {
         return "html/postingForm";
     }
 
-    //글 수정 - ajax
+    //글 수정 - fetch API
     @ResponseBody
     @PostMapping("/{postingCode}/edit")
     public ResponseEntity<Message> editPosting(@PathVariable("postingCode") Long postingCode,
@@ -157,20 +157,20 @@ public class PostController {
         //글 수정
         Post savedPost = postService.eidtPost(postingCode, dto);
 
-        return ajaxResponseOk(savedPost);
+        return fetchResponseOk(savedPost);
     }
 
-    //댓글 삭제 - ajax
+    //댓글 삭제 - fetch API
     @ResponseBody
     @DeleteMapping("/reply/{replyCode}")
     public ResponseEntity<Message> deleteReply(@PathVariable("replyCode") Long replyCode) {
         //댓글 삭제
         postService.deleteReply(replyCode);
 
-        return ajaxResponseOk(null);
+        return fetchResponseOk(null);
     }
 
-    //댓글 저장 - ajax
+    //댓글 저장 - fetch API
     @ResponseBody
     @PostMapping("/{postingCode}/reply")
     public ResponseEntity<Message> saveReply(@PathVariable("postingCode") Long postingCode,
@@ -187,7 +187,7 @@ public class PostController {
         //저장
         postService.saveReply(postingCode, userEmailID, dto);
 
-        return ajaxResponseOk(null);
+        return fetchResponseOk(null);
     }
 
 
@@ -204,7 +204,7 @@ public class PostController {
     }
 
     //JSON으로 성공 메시지 뿌려주는 함수
-    public ResponseEntity<Message> ajaxResponseOk(Object data) {
+    public ResponseEntity<Message> fetchResponseOk(Object data) {
         //응답 객체
         Message msg = new Message();
         HttpHeaders headers = new HttpHeaders();

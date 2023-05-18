@@ -1,7 +1,3 @@
-////csrf token
-//const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-//const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-
 const nowPath = window.location.pathname.replace('/boards/', '');
 
 const replyContent = document.querySelector('#replyContent');
@@ -34,8 +30,8 @@ replyContent.addEventListener('keyup', () =>{
     }
 })
 
-//댓글 작성 유효성 검사 -> ajax 통신
-async function checkReplyAndAjax() {
+//댓글 작성 유효성 검사 -> fetch API
+async function checkReplyAndFetch() {
     //replyContent 내용 담기
     let content = replyContent.value;
     //content 유효성 검사
@@ -45,19 +41,13 @@ async function checkReplyAndAjax() {
     } else {
         replyErr.style.display = 'none';
 
-        //ajax 통신
-        await replyAjax();
+        //fetch API
+        await saveReply();
     }
 }
 
-////headers 에 csrfToken 설정
-//const headers = {
-//    "Content-Type": "application/json",
-//};
-//headers[csrfHeader] = csrfToken;
-
-//댓글 ajax 통신
-async function replyAjax() {
+//fetch API
+async function saveReply() {
     const url = '/boards/' + nowPath +'/reply';
 
     const data = {
@@ -68,7 +58,7 @@ async function replyAjax() {
 
         const response = await fetch(url, {
             method: 'POST',
-            headers: headers,
+            headers: jsonHeaders,
             body: JSON.stringify(data)
         });
 
@@ -83,4 +73,4 @@ async function replyAjax() {
 }
 
 // init
-addReplyBtn.addEventListener('click', checkReplyAndAjax );
+addReplyBtn.addEventListener('click', checkReplyAndFetch);
