@@ -23,6 +23,7 @@ public class UserDto {
                     .userEmailId(this.userEmailId)
                     .userPassword(this.userPassword)
                     .userNickname(this.userNickname)
+                    .userProfilePath(this.userProfile)
                     .userRole("ROLE_USER")
                     .build();
         }

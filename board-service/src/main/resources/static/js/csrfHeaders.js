@@ -9,8 +9,7 @@ const jsonHeaders = {
 };
 jsonHeaders[csrfHeader] = csrfToken;
 
-//multipart form 타입
-const MultipartHeaders = {
-    "Content-Type": "multipart/form-data",
+//multipart 타입
+const multipartHeaders = {
 };
-formHeaders[csrfHeader] = csrfToken;
+multipartHeaders[csrfHeader] = csrfToken;

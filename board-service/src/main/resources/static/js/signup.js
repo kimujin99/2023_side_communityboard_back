@@ -8,6 +8,7 @@ const modalMsg = document.querySelector('#email-check-modal-msg');
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
 const nicknameInput = document.querySelector('#nickname');
+
 const profileInput = document.querySelector('#profile');
 const profileNameInput = document.querySelector('#profileName');
 
@@ -206,12 +207,46 @@ submitSignupBtn.addEventListener('click', () =>{
 
         //fetch
         if(passwordChecking && nicknameChecking && profileChecking) {
-            signup();
+            if(profileInput != null) {
+                uploadProFileAndSignup();
+            } else if (profileInput == null) {
+                signup();
+            }
         }
 
     }
 
 })
+
+//fetch API
+let uploadedProfileImgPath = null;
+
+async function uploadProFileAndSignup() {
+    let formData = new FormData();
+    formData.append('profile', profileInput.files[0]);
+
+    const url ="/profile-upload.do";
+
+    try {
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: multipartHeaders,
+            body: formData
+        });
+
+        //성공 시 새로고침
+        if(response.status === 200) {
+            const data = await response.json(); // response.json()으로 Promise 객체 추출
+            uploadedProfileImgPath = data.data; // data에서 결과 추출
+
+            signup();
+        }
+
+    } catch(err) {
+        console.error(err);
+    }
+}
 
 //fetch API
 async function signup() {
@@ -220,7 +255,7 @@ async function signup() {
         userEmailId: emailInput.value,
         userPassword: passwordInput.value,
         userNickname: nicknameInput.value,
-        userProfile: null,
+        userProfile: uploadedProfileImgPath,
     };
 
     try {
@@ -276,5 +311,3 @@ async function emailDuplicateCheck() {
         console.error(err);
     }
 }
-
-//fetch API
