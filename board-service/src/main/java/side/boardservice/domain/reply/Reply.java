@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import side.boardservice.domain.post.Post;
 import side.boardservice.domain.user.User;
 
@@ -24,6 +26,7 @@ public class Reply {
     private Long replyCode;
 
     @ManyToOne
+    @OnDelete(action= OnDeleteAction.CASCADE)
     @JoinColumn(name = "posting_code")
     private Post post;
 
