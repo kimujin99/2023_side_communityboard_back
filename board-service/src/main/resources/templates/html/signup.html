@@ -85,16 +85,23 @@
           <p class="font-bold">프로필 이미지:</p>
 
           <div class="flex items-center">
+            <!--  프로필 이미지 미리보기  -->
+            <div class="flex flex-col justify-center items-center mr-3">
+              <img id="profileImgPreview" src="https://2023-side-bucket.s3.ap-northeast-2.amazonaws.com/prf/unknown_profile.png" class="nes-avatar is-rounded is-large mb-2" style="image-rendering: pixelated;">
+              <p>* 64 X 64(px)</p>
+            </div>
+
             <input id="profileName" name="profileName" type="text" class="w-1/4 nes-input mr-3" disabled>
             <label class="nes-btn mr-3">
               <span>파일 찾기</span>
               <input id="profile" name="profile" type="file">
             </label>
+            <button id="deleteProfileBtn" type="button" class="nes-btn is-error w-fit">X</button>
+          </div>
 
-            <!--  오류 메시지  -->
-            <div id="profileErr" style="display:none;">
-              <span class="text-red-500">ERROR : 파일 형식은 jpg, png만 가능합니다!</span>
-            </div>
+          <!--  오류 메시지  -->
+          <div id="profileErr" style="display:none;">
+            <span class="text-red-500">ERROR : 파일 형식은 jpg, png만 가능합니다!</span>
           </div>
         </div>
 
@@ -151,6 +158,8 @@
 </div>
 
 <script type="text/javascript" th:src="@{/js/csrfHeaders.js}"></script>
+<script type="text/javascript" th:src="@{/js/validating/nicknameValidate.js}"></script>
+<script type="text/javascript" th:src="@{/js/validating/profileValidate.js}"></script>
 <script type="text/javascript" th:src="@{/js/signup.js}"></script>
 
 </body>

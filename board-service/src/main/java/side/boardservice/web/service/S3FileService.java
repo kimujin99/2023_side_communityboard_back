@@ -2,6 +2,7 @@ package side.boardservice.web.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,17 @@ public class S3FileService {
 
 
         return amazonS3.getUrl(bucketName, keyName).toString();
+    }
+
+    public void s3FileDelete(String fileUrl, String dir) {
+
+        //저장 파일명
+        String savedFileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+
+        if(!savedFileName.equals("unknown_profile.png")) {
+            //파일 삭제
+            amazonS3.deleteObject(new DeleteObjectRequest(bucketName, dir + "/" + savedFileName));
+        }
+
     }
 }

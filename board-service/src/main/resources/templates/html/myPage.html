@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--  meta  -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--  csrf token  -->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!--  link  -->
+    <link th:href="@{https://unpkg.com/nes.css@latest/css/nes.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link th:href="@{/css/myPage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/paging.css}" rel="stylesheet"/>
+
+    <link rel="shortcut icon" href="/img/icon/favicon.ico">
+
+    <!--  script  -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            height:100%;
+            width:100%;
+        }
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        nav, footer {
+            min-width:1200px;
+        }
+    </style>
+
+    <!--  title  -->
+    <title>게시판</title>
+</head>
+<body>
+
+<!--  navi-bar  -->
+<nav th:replace=" html/header :: navi-bar">
+</nav>
+
+<!--  main  -->
+<div class="flex flex-col items-center w-full h-full m-0 justify-between">
+    <div class="flex flex-col m-8 table" style="margin-top:126px; height: 1100px; width: 1030px;">
+        <!--  Profile container  -->
+        <div class="inner-container profile_container flex flex-col">
+            <!--   container title  -->
+            <p class="font-bold container-title">< ! Profile ></p>
+
+            <!--  content  -->
+            <div class="flex justify-around h-full p-3">
+                <!--  user info  -->
+                <div class="flex justify-around items-center fieldset-my_98 w-1/2">
+                    <!--  profile image  -->
+                    <div class="flex flex-col justify-center items-center">
+                        <img th:src="${userInfo.userProfilePath}" class="nes-avatar is-rounded is-large mb-2" style="image-rendering: pixelated;">
+                        <p>* 64 X 64(px)</p>
+                    </div>
+                    <!--  profile info  -->
+                    <div class="flex flex-col justify-center">
+                        <input id="user-code-input" type="hidden" th:value="${userInfo.userCode}">
+                        <label>Email</label>
+                        <input type="text" disabled class="field-input_98" th:value="${userInfo.userEmailId}">
+                        <label>Nickname</label>
+                        <input type="text" disabled class="field-input_98" th:value="${userInfo.userNickname}">
+                    </div>
+                </div>
+
+                <!--  user grade  -->
+                <div class="flex flex-col justify-center items-center w-1/3">
+                    <div class="field-input_98 background-purple flex" style="width: 70%;">
+                        <img src="/img/emojis/main_emoji.png">
+                        <p class="ml-10" style="color:#fff;">열성 회원</p>
+                    </div>
+                    <div class="field-input_98 background-gray flex" style="width: 70%;">
+                        <img src="/img/emojis/main_emoji.png">
+                        <p class="ml-10">성실 회원</p>
+                    </div>
+                    <div class="field-input_98 background-gray flex mb-3" style="width: 70%;">
+                        <img src="/img/emojis/main_emoji.png">
+                        <p class="ml-10">새싹 회원</p>
+                    </div>
+                    <div class="fieldset-my_98 h-2/5 h-full w-full">
+                        <div class="flex flex-col justify-center items-center mr-14">
+                            <p class="mb-1">작성한 글</p>
+                            <p th:text="${myPostingsCnt}"></p>
+                        </div>
+                        <div class="flex flex-col justify-center items-center">
+                            <p class="mb-1">작성한 댓글</p>
+                            <p th:text="${myRepliesCnt}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--  tab container  -->
+        <div class="inner-container tab_container flex flex-col" style="margin-top: 60px;">
+            <img id="postings-tab-btn" class="tab-btn1" src="/img/ui/file_tab_checked_y.png">
+            <a id="postings-tab-anchor" class="tab-p-btn1">My Postings</a>
+            <img id="user-info-tab-btn" class="tab-btn2" src="/img/ui/file_tab_unchecked_w.png">
+            <a id="user-info-tab-anchor" class="tab-p-btn2">User Info</a>
+
+            <!--    postings tab content    -->
+            <div id="postings-tab-content" class="flex flex-col h-full justify-between">
+                <!--    postings    -->
+                <div class="nes-table-responsive m-2">
+                    <table class="nes-table is-bordered is-centered table-fixed" style="width:99%">
+                        <thead>
+                        <tr>
+                            <th class="w-1/12">ID</th>
+                            <th class="w-2/12">카테고리</th>
+                            <th class="w-4/12">제목</th>
+                            <th class="w-2/12">작성자</th>
+                            <th class="w-1/12">조회수</th>
+                            <th class="w-2/12">작성일</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="val : ${postList}"
+                            th:onclick="|location.href='@{/boards/{postingCode}(postingCode=${val.postingCode})}'|"
+                            id="plus-view-count"
+                            class="nes-pointer">
+                            <td th:text="${val.postingCode}">ID</td>
+                            <td th:text="${val.categoryName}" class="text-slate-400">카테고리</td>
+                            <td th:text="${val.postingTitle}">제목</td>
+                            <td th:text="${val.userNickname}">작성자</td>
+                            <td th:text="${val.viewCount}">조회수</td>
+                            <td th:text="${val.insTime}">작성일</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--    pagination    -->
+                <div>
+                    <ul class="paging-container">
+                        <!--   맨 앞 페이지로   -->
+                        <li class="paging-btn">
+                            <a th:href="@{/boards/my(page = 0)}">⇤</a>
+                        </li>
+
+                        <!--   앞 페이지로   -->
+                        <li th:with="maxPage = ${T(java.lang.Math).max(nowPage -2 , 0)}" class="paging-btn">
+                            <a th:href="@{/boards/my(page = ${maxPage})}">◀</a>
+                        </li>
+
+                        <!--   선택한 페이지로   -->
+                        <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                            <a class="paging-btn paging-activated nes-pointer"
+                               th:if="${page} != ${nowPage}" th:href="@{/boards/my(page = ${page - 1})}"
+                               th:text="${page}"></a>
+                            <span class="paging-btn paging-deactivated" th:if="${page == nowPage}" th:text="${page}"></span>
+                        </li>
+
+                        <!--   뒷 페이지로   -->
+                        <li th:with="minPage = ${T(java.lang.Math).min(nowPage, totalPage - 1)}" class="paging-btn">
+                            <a th:href="@{/boards/my(page = ${minPage})}">▶</a>
+                        </li>
+
+                        <!--   맨 뒷 페이지로   -->
+                        <li class="paging-btn">
+                            <a th:href="@{/boards/my(page = ${totalPage - 1})}">⇥</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--    user info tab content    -->
+            <div id="user-info-tab-content" class="flex flex-col h-full" style="display: none;">
+                <div class="inner-container w-full h-fit flex flex-col">
+                    <p class="text-center text-xl font-bold mb-7" style="text-shadow: 2px 2px 0px #bdbdbd">회원정보 수정</p>
+
+                    <!--  이메일 입력창  -->
+                    <div class="flex flex-col mb-3">
+                        <p class="font-bold">이메일:</p>
+
+                        <div class="flex items-center">
+                            <input id="email" name="email" type="text" class="w-1/2 nes-input mr-3" disabled th:value="${userInfo.userEmailId}">
+                        </div>
+                    </div>
+
+                    <!--  회원 프로필 이미지 업로드창  -->
+                    <div class="flex flex-col mb-3">
+                        <p class="font-bold">프로필 이미지:</p>
+
+                        <div class="flex items-center">
+                            <!--  프로필 이미지 미리보기  -->
+                            <div class="flex flex-col justify-center items-center mr-3">
+                                <img id="profileImgPreview" th:src="${userInfo.userProfilePath}" class="nes-avatar is-rounded is-large mb-2" style="image-rendering: pixelated;">
+                                <p>* 64 X 64(px)</p>
+                            </div>
+
+                            <input id="profileName" name="profileName" type="text" class="w-1/4 nes-input mr-3" disabled>
+                            <label class="nes-btn mr-3">
+                                <span>파일 찾기</span>
+                                <input id="profile" name="profile" type="file">
+                            </label>
+                            <button id="deleteProfileBtn" type="button" class="nes-btn is-error w-fit">X</button>
+                        </div>
+
+                        <!--  오류 메시지  -->
+                        <div id="profileErr" style="display:none;">
+                            <span class="text-red-500">ERROR : 파일 형식은 jpg, png만 가능합니다!</span>
+                        </div>
+                    </div>
+
+                    <!--  닉네임 입력창  -->
+                    <div class="flex flex-col mb-7">
+                        <p class="font-bold">닉네임:</p>
+
+                        <div class="flex items-center">
+                            <input id="nickname" name="nickname" type="text" class="w-1/4 nes-input mr-3" th:value="${userInfo.userNickname}">
+
+                            <!--  유효성 체크 성공  -->
+                            <div id="nicknameChecked" style="display:none;">
+                                <img th:src="@{/img/icon/checked.png}">
+                            </div>
+
+                            <!--  오류 메시지  -->
+                            <div id="nicknameErr" style="display:none;">
+                                <span class="text-red-500">ERROR : 닉네임을 입력해주세요!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button id="submit-update-btn" type="button" class="nes-btn is-primary mb-3" style="width:30%" th:text="수정"></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div >
+
+    <!--  footer  -->
+    <footer th:replace=" html/footer :: footer ">
+    </footer>
+</div>
+
+<script type="text/javascript" th:src="@{/js/csrfHeaders.js}"></script>
+<script type="text/javascript" th:src="@{/js/validating/nicknameValidate.js}"></script>
+<script type="text/javascript" th:src="@{/js/validating/profileValidate.js}"></script>
+<script type="text/javascript" th:src="@{/js/myPage.js}"></script>
+
+</body>
+</html>

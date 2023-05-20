@@ -19,10 +19,25 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public User getUserByUserCode(Long userCode) {
+        return userRepository.findById(userCode).get();
+    }
+
     public void saveUser(UserDto.Request dto) {
         dto.setUserPassword(bCryptPasswordEncoder.encode(dto.getUserPassword()));
 
         userRepository.save(dto.toEntity());
+    }
+
+    public void editUser(User user, UserDto.Request dto) {
+
+        if(dto.getUserProfile() != null) {
+            user.updateUser(dto.getUserNickname(), dto.getUserProfile());
+        } else {
+            user.updateUserNickname(dto.getUserNickname());
+        }
+
+        userRepository.save(user);
     }
 
     public Boolean emailDuplicateCheck(UserDto.Request dto) {
@@ -37,5 +52,9 @@ public class UserService {
 
     public UserDto.Response getUserInfo(Principal principal) {
         return new UserDto.Response(userRepository.findByUserEmailId(principal.getName()));
+    }
+
+    public UserDto.MyPageResponse getMyPageUserInfo(Principal principal) {
+        return new UserDto.MyPageResponse(userRepository.findByUserEmailId(principal.getName()));
     }
 }

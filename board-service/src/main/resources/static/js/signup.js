@@ -7,25 +7,16 @@ const modalMsg = document.querySelector('#email-check-modal-msg');
 //input
 const emailInput = document.querySelector('#email');
 const passwordInput = document.querySelector('#password');
-const nicknameInput = document.querySelector('#nickname');
-
-const profileInput = document.querySelector('#profile');
-const profileNameInput = document.querySelector('#profileName');
 
 //error
 const passwordErr = document.querySelector('#passwordErr');
 const passwordErrSpan = document.querySelector('#passwordErr span');
 const emailErr = document.querySelector('#emailErr');
 const emailErrSpan = document.querySelector('#emailErr span');
-const nicknameErr = document.querySelector('#nicknameErr');
-const nicknameErrSpan = document.querySelector('#nicknameErr span');
-const profileErr = document.querySelector('#profileErr');
-const profileErrSpan = document.querySelector('#profileErr span');
 
 //checked
 const passwordChecked = document.querySelector('#passwordChecked');
 const emailChecked = document.querySelector('#emailChecked');
-const nicknameChecked = document.querySelector('#nicknameChecked');
 
 const submitSignupBtn = document.querySelector('#submit-signup-btn');
 
@@ -34,8 +25,6 @@ let emailValidChecking = false;
 let emailDuplicateChecking = false;
 
 let passwordChecking = false;
-let nicknameChecking = false;
-let profileChecking = true;
 
 //email 공백 금지
 emailInput.addEventListener('keyup', () => {
@@ -124,77 +113,6 @@ function validatePassword() {
     }
 }
 
-//nickname 공백 금지
-nicknameInput.addEventListener('keyup', () => {
-    const nickname = nicknameInput.value;
-    nicknameInput.value = nickname.trim();
-})
-
-//nickname 변경 감지
-nicknameInput.addEventListener('change', () => {
-    nicknameChecking = false;
-    nicknameChecked.style.display = 'none';
-})
-
-//nickname 유효성 체크
-function validateNickname() {
-    const nickname = nicknameInput.value;
-
-    nicknameChecked.style.display = 'none';
-
-    if(nickname.trim() == '' || nickname == null) {
-        nicknameChecking = false;
-        nicknameErrSpan.innerText = 'ERROR : 닉네임을 입력해주세요!';
-        nicknameErr.style.display = 'block';
-    } else if(nickname.length < 2 || nickname.length > 16) {
-        nicknameChecking = false;
-        nicknameErrSpan.innerText = 'ERROR : 닉네임은 2~16자 사이입니다!';
-        nicknameErr.style.display = 'block';
-    } else {
-        nicknameChecking = true;
-        nicknameChecked.style.display = 'block';
-        nicknameErr.style.display = 'none';
-    }
-}
-
-//profile 형식 설정
-var MaxSize = 10;
-var validFileExts = ["PNG", "JPG", "JPEG"];
-
-//profile 유효성 체크
-function validateProfile() {
-    const filePath = profileInput.value;
-    const fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
-
-    //파일명 인풋에 세팅
-    profileNameInput.value = fileName;
-
-    const fileSize = profileInput.files[0].size;
-    const maxSize = 1024 * 1024 * MaxSize;
-
-    const fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toUpperCase();
-
-    console.log("filePath : " + filePath);
-    console.log("fileName : " + fileName);
-    console.log("fileSize : " + fileSize);
-    console.log("fileExt : " + fileExt);
-
-    if(maxSize < fileSize) {
-        profileChecking = false;
-        profileErrSpan.innerText = 'ERROR : 파일 용량은 10MB 까지만 업로드 가능합니다!';
-        profileErr.style.display = 'block';
-    } else if(!validFileExts.includes(fileExt)) {
-        profileChecking = false;
-        profileErrSpan.innerText = 'ERROR : 파일은 png, jpg, jpeg 형식만 업로드 가능합니다!';
-        profileErr.style.display = 'block';
-    } else {
-        profileChecking = true;
-        profileErr.style.display = 'none';
-    }
-}
-
-profileInput.addEventListener('change', validateProfile);
-
 submitSignupBtn.addEventListener('click', () =>{
 
     if(!emailDuplicateChecking) {
@@ -207,9 +125,9 @@ submitSignupBtn.addEventListener('click', () =>{
 
         //fetch
         if(passwordChecking && nicknameChecking && profileChecking) {
-            if(profileInput != null) {
+            if(profileInput.files.length != 0) {
                 uploadProFileAndSignup();
-            } else if (profileInput == null) {
+            } else if (profileInput.files.length == 0) {
                 signup();
             }
         }

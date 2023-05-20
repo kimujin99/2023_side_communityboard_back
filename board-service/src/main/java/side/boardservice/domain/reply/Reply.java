@@ -1,5 +1,7 @@
 package side.boardservice.domain.reply;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,6 +21,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "replys_tb")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "replyCode")
 public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

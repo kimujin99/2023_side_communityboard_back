@@ -28,7 +28,8 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
             errmsg = "알 수 없는 오류로 로그인 요청을 처리할 수 없습니다. 관리자에게 문의하세요.";
         }
 
-        errmsg = URLEncoder.encode(errmsg, "UTF-8"); /* 한글 인코딩 깨진 문제 방지 */
+        //한글 깨짐 방지
+        errmsg = URLEncoder.encode(errmsg, "UTF-8");
         setDefaultFailureUrl("/login?error=true&exception="+errmsg);
         super.onAuthenticationFailure(request, response, exception);
     }

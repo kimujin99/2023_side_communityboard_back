@@ -87,7 +87,7 @@ async function savePosting(url, editPostingCode) {
         }
 
     } catch(err) {
-        console.error(err);
+        console.log(err);
     }
 }
 

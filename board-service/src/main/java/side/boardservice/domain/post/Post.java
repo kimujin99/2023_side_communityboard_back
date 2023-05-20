@@ -1,5 +1,8 @@
 package side.boardservice.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,6 +23,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "postings_tb")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "postingCode")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

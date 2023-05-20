@@ -71,82 +71,84 @@
         </div>
 
         <hr>
+        <div class="flex flex-col justify-between" style="height: calc(100% - 70px);">
+            <!--    postings    -->
+            <div class="nes-table-responsive m-2">
+                <table class="nes-table is-bordered is-centered table-fixed" style="width:99%">
+                    <thead>
+                    <tr>
+                        <th class="w-1/12">ID</th>
+                        <th class="w-2/12">카테고리</th>
+                        <th class="w-4/12">제목</th>
+                        <th class="w-2/12">작성자</th>
+                        <th class="w-1/12">조회수</th>
+                        <th class="w-2/12">작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="val : ${postList}"
+                        th:onclick="|location.href='@{/boards/{postingCode}(postingCode=${val.postingCode})}'|"
+                        id="plus-view-count"
+                        class="nes-pointer">
+                        <td th:text="${val.postingCode}">ID</td>
+                        <td th:text="${val.categoryName}" class="text-slate-400">카테고리</td>
+                        <td th:text="${val.postingTitle}">제목</td>
+                        <td th:text="${val.userNickname}">작성자</td>
+                        <td th:text="${val.viewCount}">조회수</td>
+                        <td th:text="${val.insTime}">작성일</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <!--    postings    -->
-        <div class="nes-table-responsive m-2">
-            <table class="nes-table is-bordered is-centered table-fixed" style="width:99%">
-                <thead>
-                <tr>
-                    <th class="w-1/12">ID</th>
-                    <th class="w-2/12">카테고리</th>
-                    <th class="w-4/12">제목</th>
-                    <th class="w-2/12">작성자</th>
-                    <th class="w-1/12">조회수</th>
-                    <th class="w-2/12">작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="val : ${postList}"
-                    th:onclick="|location.href='@{/boards/{postingCode}(postingCode=${val.postingCode})}'|"
-                    id="plus-view-count"
-                    class="nes-pointer">
-                    <td th:text="${val.postingCode}">ID</td>
-                    <td th:text="${val.categoryName}" class="text-slate-400">카테고리</td>
-                    <td th:text="${val.postingTitle}">제목</td>
-                    <td th:text="${val.userNickname}">작성자</td>
-                    <td th:text="${val.viewCount}">조회수</td>
-                    <td th:text="${val.insTime}">작성일</td>
-                </tr>
-                </tbody>
-            </table>
+            <div>
+                <ul class="paging-container">
+                    <!--   맨 앞 페이지로   -->
+                    <li class="paging-btn">
+                        <a th:if="${selectedCategoryCode} != null"
+                           th:href="@{/boards(page = 0, category-code = ${selectedCategoryCode})}">⇤</a>
+                        <a th:if="${selectedCategoryCode} == null"
+                           th:href="@{/boards(page = 0)}">⇤</a>
+                    </li>
+
+                    <!--   앞 페이지로   -->
+                    <li th:with="maxPage = ${T(java.lang.Math).max(nowPage -2 , 0)}" class="paging-btn">
+                        <a th:if="${selectedCategoryCode} != null"
+                           th:href="@{/boards(page = ${maxPage}, category-code = ${selectedCategoryCode})}">◀</a>
+                        <a th:if="${selectedCategoryCode} == null"
+                           th:href="@{/boards(page = ${maxPage})}">◀</a>
+                    </li>
+
+                    <!--   선택한 페이지로   -->
+                    <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
+                        <a class="paging-btn nes-pointer"
+                           th:if="${page} != ${nowPage} and ${selectedCategoryCode} != null" th:href="@{/boards(page = ${page - 1}, category-code = ${selectedCategoryCode})}"
+                           th:text="${page}"></a>
+                        <a class="paging-btn paging-activated nes-pointer"
+                           th:if="${page} != ${nowPage} and ${selectedCategoryCode} == null" th:href="@{/boards(page = ${page - 1})}"
+                           th:text="${page}"></a>
+                        <span class="paging-btn paging-deactivated" th:if="${page == nowPage}" th:text="${page}"></span>
+                    </li>
+
+                    <!--   뒷 페이지로   -->
+                    <li th:with="minPage = ${T(java.lang.Math).min(nowPage, totalPage - 1)}" class="paging-btn">
+                        <a th:if="${selectedCategoryCode} != null"
+                           th:href="@{/boards(page = ${minPage}, category-code = ${selectedCategoryCode})}">▶</a>
+                        <a th:if="${selectedCategoryCode} == null"
+                           th:href="@{/boards(page = ${minPage})}">▶</a>
+                    </li>
+
+                    <!--   맨 뒷 페이지로   -->
+                    <li class="paging-btn">
+                        <a th:if="${selectedCategoryCode} != null"
+                           th:href="@{/boards(page = ${totalPage - 1}, category-code = ${selectedCategoryCode})}">⇥</a>
+                        <a th:if="${selectedCategoryCode} == null"
+                           th:href="@{/boards(page = ${totalPage - 1})}">⇥</a>
+                    </li>
+                </ul>
+            </div>
         </div>
 
-        <div>
-            <ul class="paging-container">
-                <!--   맨 앞 페이지로   -->
-                <li class="paging-btn">
-                    <a th:if="${selectedCategoryCode} != null"
-                       th:href="@{/boards(page = 0, category-code = ${selectedCategoryCode})}">⇤</a>
-                    <a th:if="${selectedCategoryCode} == null"
-                       th:href="@{/boards(page = 0)}">⇤</a>
-                </li>
-
-                <!--   앞 페이지로   -->
-                <li th:with="maxPage = ${T(java.lang.Math).max(nowPage -2 , 0)}" class="paging-btn">
-                    <a th:if="${selectedCategoryCode} != null"
-                       th:href="@{/boards(page = ${maxPage}, category-code = ${selectedCategoryCode})}">◀</a>
-                    <a th:if="${selectedCategoryCode} == null"
-                       th:href="@{/boards(page = ${maxPage})}">◀</a>
-                </li>
-
-                <!--   선택한 페이지로   -->
-                <li th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                    <a class="paging-btn nes-pointer"
-                       th:if="${page} != ${nowPage} and ${selectedCategoryCode} != null" th:href="@{/boards(page = ${page - 1}, category-code = ${selectedCategoryCode})}"
-                       th:text="${page}"></a>
-                    <a class="paging-btn paging-activated nes-pointer"
-                       th:if="${page} != ${nowPage} and ${selectedCategoryCode} == null" th:href="@{/boards(page = ${page - 1})}"
-                       th:text="${page}"></a>
-                    <span class="paging-btn paging-deactivated" th:if="${page == nowPage}" th:text="${page}"></span>
-                </li>
-
-                <!--   뒷 페이지로   -->
-                <li th:with="minPage = ${T(java.lang.Math).min(nowPage, totalPage - 1)}" class="paging-btn">
-                    <a th:if="${selectedCategoryCode} != null"
-                       th:href="@{/boards(page = ${minPage}, category-code = ${selectedCategoryCode})}">▶</a>
-                    <a th:if="${selectedCategoryCode} == null"
-                       th:href="@{/boards(page = ${minPage})}">▶</a>
-                </li>
-
-                <!--   맨 뒷 페이지로   -->
-                <li class="paging-btn">
-                    <a th:if="${selectedCategoryCode} != null"
-                       th:href="@{/boards(page = ${totalPage - 1}, category-code = ${selectedCategoryCode})}">⇥</a>
-                    <a th:if="${selectedCategoryCode} == null"
-                       th:href="@{/boards(page = ${totalPage - 1})}">⇥</a>
-                </li>
-            </ul>
-        </div>
     </div>
 
     <!--  footer  -->
