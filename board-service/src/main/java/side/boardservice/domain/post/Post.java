@@ -57,6 +57,7 @@ public class Post {
 
     //reply와 양방향 관계 설정
     @OneToMany(mappedBy = "post")
+    @OrderBy("ins_time DESC")
     private List<Reply> replies = new ArrayList<>();
 
     @Builder
