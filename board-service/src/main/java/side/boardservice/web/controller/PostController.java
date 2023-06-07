@@ -123,10 +123,6 @@ public class PostController {
         PostDto.DetailResponse postDetail = postService.getPostDetail(postingCode);
         model.addAttribute("details", postDetail);
 
-        //댓글 갯수 가져오기
-        int cnt = postDetail.getReplies().size();
-        model.addAttribute("cnt", cnt);
-
         //인증된 사용자 정보 가져오기
         addPrincipalToModel(model, principal);
 

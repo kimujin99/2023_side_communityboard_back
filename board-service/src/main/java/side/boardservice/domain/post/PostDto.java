@@ -45,7 +45,8 @@ public class PostDto {
         private String categoryName;
         private String userNickname;
         private String postingTitle;
-        private Integer viewCount;
+//        private Integer viewCount;
+        private Integer repliesCount;
         private String insTime;
 
         public ListResponse(Post post) {
@@ -53,7 +54,8 @@ public class PostDto {
             this.categoryName = post.getCategory().getCategoryName();
             this.userNickname = post.getUser().getUserNickname();
             this.postingTitle = post.getPostingTitle();
-            this.viewCount = post.getViewCount();
+//            this.viewCount = post.getViewCount();
+            this.repliesCount = post.getReplies().size();
             //시간 포맷 변경
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
             this.insTime = formatter.format(post.getInsTime());
@@ -71,6 +73,7 @@ public class PostDto {
         private String postingTitle;
         private String postingContent;
         private Integer viewCount;
+        private Integer repliesCount;
         private String insTime, updTime;
         private List<ReplyDto.Response> replies;
 
@@ -83,6 +86,7 @@ public class PostDto {
             this.postingTitle = post.getPostingTitle();
             this.postingContent = post.getPostingContent();
             this.viewCount = post.getViewCount();
+            this.repliesCount = post.getReplies().size();
             //시간 포맷 변경
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd");
             this.insTime = formatter.format(post.getInsTime());
