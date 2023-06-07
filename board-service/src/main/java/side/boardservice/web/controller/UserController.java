@@ -92,6 +92,18 @@ public class UserController {
         if(myRepliesCnt == null) {
             myRepliesCnt = 0;
         }
+
+        //회원 등급 판별
+        // 0 -> 새싹회원, 1 -> 성실회원, 2 -> 열성회원
+        Integer myGradeScore = myPostingsCnt + myRepliesCnt;
+        if( myGradeScore < 50 ) {
+            model.addAttribute("myGrade", 0);
+        } else if ( myGradeScore < 100) {
+            model.addAttribute("myGrade", 1);
+        } else {
+            model.addAttribute("myGrade", 2);
+        }
+
         model.addAttribute("myPostingsCnt", myPostingsCnt);
         model.addAttribute("myRepliesCnt", myRepliesCnt);
 
