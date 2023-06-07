@@ -28,6 +28,7 @@ public class SecurityConfig {
         http
                 .cors().and()
                 .csrf()
+                .ignoringRequestMatchers("/boards/ck/imageUpload.do")
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
 
                 .authorizeHttpRequests((authz) -> authz
