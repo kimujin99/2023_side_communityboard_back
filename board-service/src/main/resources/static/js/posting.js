@@ -15,7 +15,7 @@ postingTitle.addEventListener('keyup', () =>{
     //글자수 제한
     if(content.length > 100) {
         //100자부터는 타이핑 불가
-        content = content.substring(0, 100);
+        content = content.slice(0, 100);
     }
 })
 

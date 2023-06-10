@@ -25,7 +25,7 @@ replyContent.addEventListener('keyup', () =>{
     //글자수 제한
     if(content.length > 500) {
         //500자부터는 타이핑 불가
-        content = content.substring(0, 500);
+        content = content.slice(0, 500);
         document.querySelector(".textCount").innerText = 500;
     }
 })
