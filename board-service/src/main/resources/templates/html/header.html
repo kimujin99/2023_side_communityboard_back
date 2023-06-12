@@ -15,9 +15,11 @@
 <body>
 <!--  navi-bar  -->
 <nav th:fragment="navi-bar" class="w-full h-24 bg-black fixed z-50 flex">
-    <div class="w-1/2 flex items-center m-6">
-        <i class="snes-jp-logo is-large"></i>
-        <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
+    <div class="w-1/2 flex m-6">
+        <a th:href="@{/boards}" class="flex items-center nes-pointer">
+            <i class="snes-jp-logo is-large"></i>
+            <p class="text-white text-2xl mx-3">WELCOME TO MY COMMUNITY!</p>
+        </a>
     </div>
     <div class="w-1/2 flex items-center justify-end m-6">
         <a class="nes-btn" th:href="@{/boards}">BOARDS</a>
