@@ -75,7 +75,7 @@
 - `JPA`, `MySQL`, `AWS RDS`, `AWS S3`, `AWS EC2`
 - `Javascript`, `Ajax`, `HTML`, `CSS`, `NES.css`, `TailWind.CSS`, `98.css`
 - `IntelliJ`, `MySQL Workbench`, `Git`, `Gihub`
-/br>
+</br>
 
 ----
 <h2 id="5">
